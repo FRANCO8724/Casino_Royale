@@ -27,11 +27,12 @@ namespace Casino_Royale
             if (textBox1.Text != "")
             {
                 
-                if (saldo > 0 && saldo <= 3000)
+                if (saldo > 0 || saldo <= 3000)
                 {
                     textBox1.Visible = false;
                     button1.Visible = false;
                     label1.Visible = false;
+                    saldo = Convert.ToDecimal(textBox1.Text);
 
                 }
 
@@ -39,7 +40,7 @@ namespace Casino_Royale
                 textBox1.Text = "";
             }
 
-           Form3 home = new Form3();
+           Form3 home = new Form3(saldo);
             home.ShowDialog();
         }
     }

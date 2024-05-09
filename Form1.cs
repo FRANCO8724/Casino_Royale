@@ -55,8 +55,6 @@ namespace Casino_Royale
             Form2 cassa = new Form2();
             cassa.ShowDialog();
 
-            Form1 inizio = new Form1();
-            inizio.Close();
         }
     }
 }

@@ -12,9 +12,12 @@ namespace Casino_Royale
 {
     public partial class Form3 : Form
     {
-        public Form3()
+        public decimal saldo2;
+
+        public Form3(decimal saldo)
         {
             InitializeComponent();
+            saldo2 = saldo;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
@@ -23,5 +26,27 @@ namespace Casino_Royale
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             button1.FlatAppearance.BorderSize = 0; // Imposta il bordo a 0 per eliminare eventuali bordi
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form4 home = new Form4(saldo2);
+            home.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
