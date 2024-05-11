@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +109,58 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\1.png" />
+    <Content Include="Resources\10.png" />
+    <Content Include="Resources\11.png" />
+    <Content Include="Resources\12.png" />
+    <Content Include="Resources\13.png" />
+    <Content Include="Resources\14.png" />
+    <Content Include="Resources\15.png" />
+    <Content Include="Resources\16.png" />
+    <Content Include="Resources\17.png" />
+    <Content Include="Resources\18.png" />
+    <Content Include="Resources\19.png" />
+    <Content Include="Resources\2.png" />
+    <Content Include="Resources\20.png" />
+    <Content Include="Resources\21.png" />
+    <Content Include="Resources\22.png" />
+    <Content Include="Resources\23.png" />
+    <Content Include="Resources\24.png" />
+    <Content Include="Resources\25.png" />
+    <Content Include="Resources\26.png" />
+    <Content Include="Resources\27.png" />
+    <Content Include="Resources\28.png" />
+    <Content Include="Resources\29.png" />
+    <Content Include="Resources\3.png" />
+    <Content Include="Resources\30.png" />
+    <Content Include="Resources\31.png" />
+    <Content Include="Resources\32.png" />
+    <Content Include="Resources\33.png" />
+    <Content Include="Resources\34.png" />
+    <Content Include="Resources\35.png" />
+    <Content Include="Resources\36.png" />
+    <Content Include="Resources\37.png" />
+    <Content Include="Resources\38.png" />
+    <Content Include="Resources\39.png" />
+    <Content Include="Resources\4.png" />
+    <Content Include="Resources\40.png" />
+    <Content Include="Resources\41.png" />
+    <Content Include="Resources\42.png" />
+    <Content Include="Resources\43.png" />
+    <Content Include="Resources\44.png" />
+    <Content Include="Resources\45.png" />
+    <Content Include="Resources\46.png" />
+    <Content Include="Resources\47.png" />
+    <Content Include="Resources\48.png" />
+    <Content Include="Resources\49.png" />
+    <Content Include="Resources\5.png" />
+    <Content Include="Resources\50.png" />
+    <Content Include="Resources\51.png" />
+    <Content Include="Resources\52.png" />
+    <Content Include="Resources\6.png" />
+    <Content Include="Resources\7.png" />
+    <Content Include="Resources\8.png" />
+    <Content Include="Resources\9.png" />
+    <Content Include="Resources\cardback.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

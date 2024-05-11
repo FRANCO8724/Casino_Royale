@@ -23,12 +23,12 @@ namespace Casino_Royale
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
 
-            this.button1.BackColor = Color.Transparent;
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            button1.FlatAppearance.BorderSize = 0; // Imposta il bordo a 0 per eliminare eventuali bordi
+            this.button4.BackColor = Color.Transparent;
+            button4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            button4.FlatAppearance.BorderSize = 0; // Imposta il bordo a 0 per eliminare eventuali bordi
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
             Form4 home = new Form4(saldo2);
@@ -45,7 +45,7 @@ namespace Casino_Royale
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
 
         }

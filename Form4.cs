@@ -18,10 +18,16 @@ namespace Casino_Royale
         public int sommautente;
         public int sommabanco;
         public decimal punt2;
+        // Creare un oggetto Random
+        Random random = new Random();
 
-        public Form4(decimal saldo)
+        int[] array = new int[52];
+           
+
+    public Form4(decimal saldo)
         {
             InitializeComponent();
+            
             this.WindowState = FormWindowState.Maximized;
             puntata = new Puntata(saldo);
             saldo2 = saldo;
@@ -29,8 +35,41 @@ namespace Casino_Royale
             // Aggiungi righe alla ListView
             listView1.Items.Clear();
 
+            listView1.Items.Add("Puntata minima: 5");
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
             listView1.Items.Add("Puntata: 0");
+
+            for (int i = 0; i < array.Length-1; i++)
+            {
+                array[i] = i;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            saldo2 = puntata.Entra(saldo2);
+            punt2 = 5;
+
+            listView1.Items.Clear();
+
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+            listView1.Items.Add("Puntata: 0");
+
+            int randomNumber = random.Next(1, 53);
+            string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
+            pictureBox2.Image = (Image)Properties.Resources.ResourceManager.GetObject(resourceName);
+            array[randomNumber - 1] = 0;
+
+            int randomNumber2;
+            string resourceName2;
+            do
+            {
+                randomNumber2 = random.Next(1, 53);
+                resourceName2 = randomNumber2.ToString(); // Converte il numero in una stringa
+            } while (array[randomNumber2 - 1] == 0);
+            pictureBox2.Image = (Image)Properties.Resources.ResourceManager.GetObject(resourceName2);
+            array[randomNumber2 - 1] = 0;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -43,7 +82,7 @@ namespace Casino_Royale
                 listView1.Clear();
                 listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
                 listView1.Items.Add("Puntata: " + Convert.ToString(punt2));
-            }
+           }
 
             textBox1.Clear();
         }
@@ -90,5 +129,7 @@ namespace Casino_Royale
             Form3 casinò = new Form3(saldo2);
             casinò.ShowDialog();
         }
+
+
     }
 }
