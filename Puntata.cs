@@ -25,12 +25,23 @@ namespace Casino_Royale
         {
             if (punt2 > 0 && punt2<= saldo)
             {
-                saldo = saldo - punt2;
                 punt = punt2 + punt;
-                
             }
 
             return punt;
+        }
+
+        public decimal Allin(decimal saldo,decimal punt3)
+        {
+            if(saldo > 0)
+            {
+                return punt3 = punt3 + saldo;        
+            }
+            else
+            {
+                punt3 = 0;
+                return punt3;
+            }
         }
     }
 }

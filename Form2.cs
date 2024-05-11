@@ -17,6 +17,7 @@ namespace Casino_Royale
         public Form2()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             saldo = 0;
             label2.Visible = false;
         }
@@ -24,24 +25,31 @@ namespace Casino_Royale
         private void button1_Click(object sender, EventArgs e)
         {
 
-            if (textBox1.Text != "")
+            saldo = Convert.ToDecimal(textBox1.Text);
+
+            if (textBox1.Text != "") 
             {
                 
-                if (saldo > 0 || saldo <= 3000)
+                if (saldo > 0 && saldo <= 3000)
                 {
                     textBox1.Visible = false;
                     button1.Visible = false;
                     label1.Visible = false;
                     saldo = Convert.ToDecimal(textBox1.Text);
 
+                    this.Hide();
+                    Form3 home = new Form3(saldo);
+                    home.ShowDialog();
+
+                }
+                else
+                {
+                    label2.Visible = true;
+                    textBox1.Text = "";
                 }
 
-                label2.Visible = true;
-                textBox1.Text = "";
             }
-
-           Form3 home = new Form3(saldo);
-            home.ShowDialog();
+            
         }
     }
 }

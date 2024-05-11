@@ -61,7 +61,7 @@
             this.percent.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.percent.Font = new System.Drawing.Font("Stencil", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.percent.ForeColor = System.Drawing.Color.Black;
-            this.percent.Location = new System.Drawing.Point(437, 389);
+            this.percent.Location = new System.Drawing.Point(452, 389);
             this.percent.Name = "percent";
             this.percent.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.percent.ScrollBars = System.Windows.Forms.ScrollBars.Both;

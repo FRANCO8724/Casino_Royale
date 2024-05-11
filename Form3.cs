@@ -17,6 +17,7 @@ namespace Casino_Royale
         public Form3(decimal saldo)
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             saldo2 = saldo;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -29,6 +30,7 @@ namespace Casino_Royale
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.Hide();
             Form4 home = new Form4(saldo2);
             home.ShowDialog();
         }

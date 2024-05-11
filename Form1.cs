@@ -16,6 +16,7 @@ namespace Casino_Royale
         public Form1()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             this.MinimumSize = new Size(1020, 600); // Imposta la dimensione minima della finestra
             button1.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -52,8 +53,10 @@ namespace Casino_Royale
 
             pictureBox1.BackgroundImage = null;
 
+            this.Hide();
             Form2 cassa = new Form2();
             cassa.ShowDialog();
+            
 
         }
     }

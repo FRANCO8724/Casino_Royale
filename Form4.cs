@@ -22,6 +22,7 @@ namespace Casino_Royale
         public Form4(decimal saldo)
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             puntata = new Puntata(saldo);
             saldo2 = saldo;
             punt2 = 0;
@@ -37,28 +38,57 @@ namespace Casino_Royale
            if(textBox1 != null)
            {
                 punt2 = puntata.EffettuaPuntata(saldo2,Convert.ToDecimal(textBox1.Text),punt2);
+                saldo2 = saldo2 - Convert.ToDecimal(textBox1.Text);
 
                 listView1.Clear();
                 listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
                 listView1.Items.Add("Puntata: " + Convert.ToString(punt2));
             }
+
+            textBox1.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //All-in
 
+            punt2 = puntata.Allin(saldo2, punt2);
+            saldo2 = 0;
+
+            if(punt2 != 0)
+            {
+                listView1.Clear();
+                listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+                listView1.Items.Add("Puntata: " + Convert.ToString(punt2));
+            }
+            else
+            {
+                listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+
+                listView1.Items.Add("Puntata: " + Convert.ToString(punt2));
+                listView1.Items.Add("Saldo insufficiente");
+            }
+
+            textBox1.Clear();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if(sommabanco > sommautente)
-            {
+            //lascia
+            listView1.Clear();
+            punt2 = 0;
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+            listView1.Items.Add("Puntata: 0");
 
-            }
-            if(sommabanco < sommautente)
-            {
+            textBox1.Clear();
 
-            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form3 casinò = new Form3(saldo2);
+            casinò.ShowDialog();
         }
     }
 }
