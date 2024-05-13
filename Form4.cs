@@ -57,18 +57,8 @@ namespace Casino_Royale
 
             int randomNumber = random.Next(1, 53);
             string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
-            pictureBox2.Image = (Image)Properties.Resources.ResourceManager.GetObject(resourceName);
-            array[randomNumber - 1] = 0;
 
-            int randomNumber2;
-            string resourceName2;
-            do
-            {
-                randomNumber2 = random.Next(1, 53);
-                resourceName2 = randomNumber2.ToString(); // Converte il numero in una stringa
-            } while (array[randomNumber2 - 1] == 0);
-            pictureBox2.Image = (Image)Properties.Resources.ResourceManager.GetObject(resourceName2);
-            array[randomNumber2 - 1] = 0;
+            pictureBox2.ImageLocation = "Resources/" + resourceName + ".png";
 
         }
 

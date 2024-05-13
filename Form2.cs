@@ -18,20 +18,21 @@ namespace Casino_Royale
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
+            this.MinimumSize = new Size(1100, 600); // Imposta la dimensione minima della finestra
             saldo = 0;
             label2.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {            
 
-            saldo = Convert.ToDecimal(textBox1.Text);
-
-            if (textBox1.Text != "") 
+            if (textBox1.Text != "")
             {
-                
+                saldo = Convert.ToDecimal(textBox1.Text);
+
                 if (saldo > 0 && saldo <= 3000)
                 {
+                    
                     textBox1.Visible = false;
                     button1.Visible = false;
                     label1.Visible = false;

@@ -24,6 +24,7 @@ namespace Casino_Royale
             percent.Visible = false;
             progressBar1.Visible = false;
 
+
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
