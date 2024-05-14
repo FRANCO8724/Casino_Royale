@@ -162,15 +162,16 @@
             this.pictureBox4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox4.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.InitialImage")));
             this.pictureBox4.Location = new System.Drawing.Point(327, 195);
+            this.pictureBox4.MaximumSize = new System.Drawing.Size(50, 57);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(27, 37);
+            this.pictureBox4.Size = new System.Drawing.Size(30, 37);
             this.pictureBox4.TabIndex = 20;
             this.pictureBox4.TabStop = false;
             // 
             // pictureBox5
             // 
             this.pictureBox5.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox5.InitialImage")));
-            this.pictureBox5.Location = new System.Drawing.Point(358, 195);
+            this.pictureBox5.Location = new System.Drawing.Point(401, 124);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(27, 37);
             this.pictureBox5.TabIndex = 21;

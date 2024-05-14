@@ -18,7 +18,6 @@ namespace Casino_Royale
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            this.MinimumSize = new Size(1020, 600); // Imposta la dimensione minima della finestra
             saldo2 = saldo;
             
         }

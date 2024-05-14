@@ -29,8 +29,6 @@ namespace Casino_Royale
             InitializeComponent();
 
             this.WindowState = FormWindowState.Maximized;
-            this.MaximumSize = this.Size;
-            this.MinimumSize = this.Size;
             puntata = new Puntata(saldo);
             saldo2 = saldo;
             punt2 = 0;
@@ -56,13 +54,15 @@ namespace Casino_Royale
 
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
             listView1.Items.Add("Puntata: 0");
+                
 
-            int randomNumber = random.Next(1, 53);
-            string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
+                pictureBox2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                pictureBox2.ImageLocation = "..\\..\\Resources\\" + Estrazione(array) + ".png";
+                pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
-            pictureBox2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            pictureBox2.ImageLocation = "..\\..\\Resources\\" + resourceName + ".png";
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            pictureBox3.ImageLocation = "..\\..\\Resources\\" + Estrazione(array) + ".png";
+            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
 
         }
 
@@ -124,6 +124,13 @@ namespace Casino_Royale
             casinò.ShowDialog();
         }
 
+        private string Estrazione(int[] a)
+        {
+            int randomNumber = random.Next(1, 53);
+            string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
+            a[randomNumber - 1] = 0;
+            return resourceName;
+        }
 
     }
 }
