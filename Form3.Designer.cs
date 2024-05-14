@@ -75,10 +75,10 @@
             this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(37, 177);
+            this.button2.Location = new System.Drawing.Point(12, 295);
             this.button2.MaximumSize = new System.Drawing.Size(427, 267);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(427, 267);
+            this.button2.Size = new System.Drawing.Size(354, 160);
             this.button2.TabIndex = 12;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);

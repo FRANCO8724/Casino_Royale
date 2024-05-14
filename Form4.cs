@@ -27,8 +27,10 @@ namespace Casino_Royale
     public Form4(decimal saldo)
         {
             InitializeComponent();
-            
+
             this.WindowState = FormWindowState.Maximized;
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
             puntata = new Puntata(saldo);
             saldo2 = saldo;
             punt2 = 0;
@@ -58,7 +60,9 @@ namespace Casino_Royale
             int randomNumber = random.Next(1, 53);
             string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
 
-            pictureBox2.ImageLocation = "Resources/" + resourceName + ".png";
+            pictureBox2.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            pictureBox2.ImageLocation = "..\\..\\Resources\\" + resourceName + ".png";
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
         }
 
