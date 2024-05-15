@@ -21,7 +21,10 @@ namespace Casino_Royale
             this.WindowState = FormWindowState.Maximized;
             this.BackgroundImageLayout = ImageLayout.Stretch; // Adatta l'immagine per riempire l'intero form
                                                               // Imposta lo spessore del bordo a 0 per renderlo invisibile
+            button1.BackgroundImageLayout = ImageLayout.Stretch;
             button2.BackgroundImageLayout = ImageLayout.Stretch;
+            button3.BackgroundImageLayout = ImageLayout.Stretch;
+            button4.BackgroundImageLayout = ImageLayout.Stretch;
             button1.FlatAppearance.BorderSize = 0;
             button2.FlatAppearance.BorderSize = 0;
             button3.FlatAppearance.BorderSize = 0;
@@ -53,7 +56,9 @@ namespace Casino_Royale
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            this.Hide();
+            Form5 home = new Form5(saldo2);
+            home.ShowDialog();
         }
 
     }
