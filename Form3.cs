@@ -31,6 +31,10 @@ namespace Casino_Royale
             button4.FlatAppearance.BorderSize = 0;
             this.FormBorderStyle = FormBorderStyle.FixedSingle; // Impedisce il ridimensionamento del form
             saldo2 = saldo;
+            listView1.Scrollable = false;
+
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
 
 
         }
@@ -40,6 +44,9 @@ namespace Casino_Royale
             this.Hide();
             Form4 home = new Form4(saldo2);
             home.ShowDialog();
+
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " +  Convert.ToString(saldo2));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -52,6 +59,9 @@ namespace Casino_Royale
             this.Hide();
             Form6 home = new Form6(saldo2);
             home.ShowDialog();
+
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -59,6 +69,9 @@ namespace Casino_Royale
             this.Hide();
             Form5 home = new Form5(saldo2);
             home.ShowDialog();
+
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
         }
 
     }
