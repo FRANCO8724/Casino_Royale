@@ -1,15 +1,7 @@
-﻿using System;
+﻿using Casino_Royale;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Casino_Royale
@@ -23,7 +15,9 @@ namespace Casino_Royale
         public int[] r2;
         public int[] control;
         public int[,] usercont;
-        int c = 0;
+        public decimal cinquina;
+        public decimal tombola;
+        public int controlcinq;
 
 
         private List<Riga> a { get; set; }
@@ -41,6 +35,8 @@ namespace Casino_Royale
             dataGridView4.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             dataGridView5.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             r = new int[90];
+            cinquina = 0;
+            tombola = 0;
             usercont = new int[12, 5];
             r2 = new int[90];
             control = new int[5];
@@ -49,11 +45,12 @@ namespace Casino_Royale
             control[2] = -11;
             control[3] = -11;
             control[4] = -11;
+            int controlcinq = 0;
 
             for (int i = 0; i < r.Length; i++)
             {
-                r[i] = i+1;
-                r2[i] = i+1;
+                r[i] = i + 1;
+                r2[i] = i + 1;
             }
 
             int c1 = 0;
@@ -62,21 +59,17 @@ namespace Casino_Royale
             int c4 = 9;
 
             a = Geta();
-            a2 = Geta2(r, control,c1);
-            a3 = Geta2(r, control,c2);
-            a4 = Geta2(r, control,c3);
-            a5 = Geta2(r, control,c4);
+            a2 = Geta2(r, control, c1);
+            a3 = Geta2(r, control, c2);
+            a4 = Geta2(r, control, c3);
+            a5 = Geta2(r, control, c4);
 
             this.WindowState = FormWindowState.Maximized;
             this.MinimumSize = new Size(1550, 750); // Imposta la dimensione minima della finestra
             ncartelle = 0;
             costo = 0;
             saldo2 = saldo;
-            dataGridView1.ReadOnly = true;
-            dataGridView2.ReadOnly = true;
-            dataGridView3.ReadOnly = true;
-            dataGridView4.ReadOnly = true;
-            dataGridView5.ReadOnly = true;
+            listView1.Visible = false;
             // Imposta l'ancoraggio della DataGridView per farla adattare sia in larghezza che in altezza
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             // Imposta la modalità di ridimensionamento automatico in modo che le colonne si espandano per riempire lo spazio disponibile
@@ -86,6 +79,7 @@ namespace Casino_Royale
             dataGridView3.Visible = false;
             dataGridView4.Visible = false;
             dataGridView5.Visible = false;
+            listView2.Visible = false;
         }
 
         private List<Riga> Geta()
@@ -113,15 +107,15 @@ namespace Casino_Royale
             return list;
         }
 
-        private List<Riga> Geta2(int[] array, int[] array2,int c)
+        private List<Riga> Geta2(int[] array, int[] array2, int c)
         {
             var list = new List<Riga>();
 
             for (int i = 0; i < 3; i++)
             {
                 var riga = new Riga();
-                 
-                    Rand(array, array2,riga,c);
+
+                Rand(array, array2, riga, c);
 
                 list.Add(riga);
                 c++;
@@ -168,126 +162,471 @@ namespace Casino_Royale
 
         private void button1_Click(object sender, EventArgs e)
         {
-                dataGridView1.Visible = true;
-                label1.Visible = false;
-                label2.Visible = false;
-                textBox1.Visible = false;
-                textBox2.Visible = false;
-                button1.Visible = false;
+            dataGridView1.Visible = true;
+            label1.Visible = false;
+            label2.Visible = false;
+            textBox1.Visible = false;
+            textBox2.Visible = false;
+            button1.Visible = false;
+            button2.Visible= false;
+            listView2.Visible = true;
 
+            listView1.Visible = true;
 
                 costo = Convert.ToInt32(textBox2.Text);
 
-                saldo2 = saldo2 - costo;
+            saldo2 -= costo;
 
-                ncartelle = Convert.ToInt32(textBox1.Text);
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+            listView1.Items.Add("Cinquina: " + Convert.ToString((costo / 3) * 1));
+            listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
 
-                if (ncartelle == 1)
-                {
-                    dataGridView2.Visible = true;
-                }
-                if (ncartelle == 2)
-                {
-                    dataGridView2.Visible = true;
-                    dataGridView3.Visible = true;
-                }
-                if (ncartelle == 3)
-                {
-                    dataGridView2.Visible = true;
-                    dataGridView3.Visible = true;
-                    dataGridView4.Visible = true;
-                }
-                if (ncartelle == 4)
-                {
-                    dataGridView2.Visible = true;
-                    dataGridView3.Visible = true;
-                    dataGridView4.Visible = true;
-                    dataGridView5.Visible = true;
-                }
+            ncartelle = Convert.ToInt32(textBox1.Text);
 
-                Random random = new Random();
+            if (ncartelle == 1)
+            {
+                dataGridView2.Visible = true;
+            }
+            if (ncartelle == 2)
+            {
+                dataGridView2.Visible = true;
+                dataGridView3.Visible = true;
+            }
+            if (ncartelle == 3)
+            {
+                dataGridView2.Visible = true;
+                dataGridView3.Visible = true;
+                dataGridView4.Visible = true;
+            }
+            if (ncartelle == 4)
+            {
+                dataGridView2.Visible = true;
+                dataGridView3.Visible = true;
+                dataGridView4.Visible = true;
+                dataGridView5.Visible = true;
+            }
 
+            Random random = new Random();
 
-
-            // Estrae casualmente 90 numeri senza ripetizioni
-            int[] numeriCasuali = new int[90];
-
+            List<int> numeriEstratti = new List<int>();
             for (int i = 0; i < 90; i++)
             {
-                int index = random.Next(0, r2.Length);
-                numeriCasuali[i] = r2[index];             
-
-                // Rimuove il numero estratto dall'array per evitare ripetizioni
-                r2 = r2.Where((val, idx) => idx != index).ToArray();
-
-                // Aggiorna la DataGridView
-                int riga = (numeriCasuali[i] - 1) / 10; // Calcola la riga
-                int colonna = (numeriCasuali[i] - 1) % 10; // Calcola la colonna
-
-                if (colonna == 9) // Se la colonna è 9, imposta il valore a 0
+                int numeroEstratto;
+                do
                 {
-                    dataGridView1.Rows[riga].Cells[9].Value = 0;
+                    numeroEstratto = random.Next(1, 91);
+                } while (numeriEstratti.Contains(numeroEstratto));
+                numeriEstratti.Add(numeroEstratto);
 
-                    if (Convert.ToInt32(dataGridView2.Rows[0].Cells[9].Value) == index)
-                    {
-                        dataGridView2.Rows[0].Cells[9].Value = 0;
-                    }
-                    if (Convert.ToInt32(dataGridView2.Rows[1].Cells[9].Value) == index)
-                    {
-                        dataGridView2.Rows[1].Cells[9].Value = 0;
-                    }
-                    if (Convert.ToInt32(dataGridView2.Rows[2].Cells[9].Value) == index)
-                    {
-                        dataGridView2.Rows[2].Cells[9].Value = 0;
-                    }
+                // Imposta il numero estratto a 0 nelle DataGridView
+                AggiornaDataGridView(numeroEstratto);
 
-                }
-                else
+                for (int i3 = 0; i3 < 12; i3++)
                 {
-                    dataGridView1.Rows[riga].Cells[colonna].Value = 0;
-
-                    if (Convert.ToInt32(dataGridView2.Rows[0].Cells[colonna].Value) == index)
+                    for (int i4 = 0; i4 < 5; i4++)
                     {
-                        dataGridView2.Rows[0].Cells[colonna].Value = 0;
-                    }
-                    if (Convert.ToInt32(dataGridView2.Rows[1].Cells[colonna].Value) == index)
-                    {
-                        dataGridView2.Rows[1].Cells[colonna].Value = 0;
-                    }
-                    if (Convert.ToInt32(dataGridView2.Rows[2].Cells[colonna].Value) == index)
-                    {
-                        dataGridView2.Rows[2].Cells[colonna].Value = 0;
-                    }
-                }
-
-                for(int i3=0;i3<12;i3++)
-                {
-                    for(int i4 =0; i4 < 5;i4++)
-                    {
-                        if (usercont[i3,i4] == index)
+                        if (usercont[i3, i4] == numeroEstratto)
                         {
                             usercont[i3, i4] = 0;
                         }
                     }
                 }
 
-                // Aggiorna la visualizzazione e attendi per 500 millisecondi
+                for (int q = 0; q < 90; q++)
+                {
+                    if (r2[q] == numeroEstratto)
+                    {
+                        r2[q] = 0;
+                        break;
+                    }
+                }
+
                 dataGridView1.Refresh();
                 dataGridView2.Refresh();
-                
+                dataGridView3.Refresh();
+                dataGridView4.Refresh();
+                dataGridView5.Refresh();
+
+                int rig = 0;
+                int rig2 = 0;
+                int rig3 = 0;
+                int rig4 = 0;
+                int tomb = 0;
+                if (ncartelle == 1)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        rig = 0;
+
+
+                        for (int j2 = 0; j2 < 5; j2++)
+                        {
+                            if (usercont[j, j2] == 0)
+                            {
+                                rig++;
+                                tomb++;
+                            }
+                            if (rig == 5)
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+                int tomb2 = 0;
+                if (ncartelle == 2)
+                {
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        rig2 = 0;
+
+
+                        for (int j2 = 0; j2 < 5; j2++)
+                        {
+                            if (usercont[j + 3, j2] == 0)
+                            {
+                                rig2++;
+                                tomb2++;
+                            }
+                            if (rig2 == 5)
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+                int tomb3 = 0;
+
+                if (ncartelle == 3)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        rig3 = 0;
+
+                        for (int j2 = 0; j2 < 5; j2++)
+                        {
+                            if (usercont[j + 6, j2] == 0)
+                            {
+                                rig3++;
+                                tomb3++;
+                            }
+                            if (rig3 == 5)
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+                int tomb4 = 0;
+
+                if (ncartelle == 4)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        rig4 = 0;
+
+                        for (int j2 = 0; j2 < 5; j2++)
+                        {
+                            if (usercont[j + 9, j2] == 0)
+                            {
+                                rig4++;
+                                tomb4++;
+                            }
+                            if (rig4 == 5)
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+                //Tabellone cinquina
+                int cinq = 0;
+                for (int q2 = 0; q2 < 17; q2++)
+                {
+                    cinq = 0;
+
+
+                    for (int q3 = 1; q3 < 6; q3++)
+                    {
+                        if (r2[q3 * q2] == 0)
+                        {
+                            cinq++;
+                        }
+                    }
+                    if (cinq == 5)
+                    {
+
+                        break;
+                    }
+
+                }
+
+                //Tabellone tombola
+                int tomb6 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 0;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 10;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 20;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb6++;
+                        }
+                    }
+                }
+
+                int tomb7 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 5;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 15;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 25;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb7++;
+                        }
+                    }
+                }
+
+
+                int tomb8 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 30;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 40;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 50;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb8++;
+                        }
+                    }
+                }
+
+                int tomb9 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 35;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 45;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 55;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb9++;
+                        }
+                    }
+                }
+
+                int tomb10 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 60;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 70;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 80;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb10++;
+                        }
+                    }
+                }
+
+                int tomb11 = 0;
+                for (int q5 = 0; q5 < 3; q5++)
+                {
+                    for (int q4 = 0; q4 < 5; q4++)
+                    {
+                        int a = 0;
+                        if (q5 < 1)
+                        {
+                            a = 65;
+                        }
+                        if (q5 > 0 && q5 < 2)
+                        {
+                            a = 75;
+                        }
+                        if (q5 > 1 && q5 < 3)
+                        {
+                            a = 85;
+                        }
+
+                        if (r2[q4 + a] == 0)
+                        {
+                            tomb11++;
+                        }
+                    }
+                }
+                if (controlcinq == 0)
+                {
+                    //Cinquina tutti
+                    if ((rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5) && cinq == 5)
+                    {
+                        listView2.Clear();
+                        listView2.Items.Add("Cinquina! Parità");
+                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        saldo2 += (costo / 3) * 1;
+                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        controlcinq++;
+                    }
+
+                    //Cinquina utente
+                    if (rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5)
+                    {
+                        listView2.Clear();
+                        listView2.Items.Add("Cinquina! vince l'utente");
+                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        saldo2 += (costo / 3) * 1;
+                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        controlcinq++;
+                    }
+
+                    //Cinquina banco
+                    if (cinq == 5)
+                    {
+                        listView2.Clear();
+                        listView2.Items.Add("Cinquina! vince il banco");
+                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        saldo2 -= (costo / 3) * 1;
+                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        controlcinq++;
+                    }
+                }
+
+                    //Tombola tutti
+                    if ((tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15) && (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15))
+                    {
+                        listView1.Clear();
+                        listView1.Items.Add("Tombola! Parità");
+                        saldo2 += (costo / 3) * 2;
+                        break;
+                    }
+
+
+                    //Tombola utente
+                    if (tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15)
+                    {
+                        listView2.Clear();
+                        listView2.Items.Add("Tombola! Vince l'utente ");
+                        saldo2 += (costo / 3) * 2;
+                        break;
+                    }
+
+
+
+                    //Tombola banco
+                    if (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15)
+                    {
+                        listView1.Clear();
+                        listView1.Items.Add("Tombola! Vince il banco ");
+                        saldo2 -= (costo / 3) * 2;
+                        break;
+                    }
+
 
             }
 
-
-            
+            button2.Visible = true;
         }
 
-        private void Rand(int[] a, int[] control,Riga riga,int c)
+
+
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+        }
+
+
+        private void AggiornaDataGridView(int numero)
+        {
+            foreach (DataGridView dgv in new DataGridView[] { dataGridView1, dataGridView2, dataGridView3, dataGridView4, dataGridView5 })
+            {
+                foreach (DataGridViewRow riga in dgv.Rows)
+                {
+                    foreach (DataGridViewCell cella in riga.Cells)
+                    {
+                        if (cella.Value != null && Convert.ToInt32(cella.Value) == numero)
+                        {
+                            cella.Style.BackColor = Color.Red;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Rand(int[] a, int[] control, Riga riga, int c)
         {
             int[] o = new int[5];
             Random random = new Random();
 
-            int w =0 ;
+            int w = 0;
 
             for (int i = 0; i < 5; i++)
             {
@@ -345,5 +684,14 @@ namespace Casino_Royale
                 }
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form3 casinò = new Form3(saldo2);
+            casinò.ShowDialog();
+        }
+
+
     }
 }
