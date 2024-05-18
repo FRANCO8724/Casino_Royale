@@ -158,7 +158,7 @@
             // pictureBox11
             // 
             this.pictureBox11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox11.Location = new System.Drawing.Point(410, 60);
+            this.pictureBox11.Location = new System.Drawing.Point(339, 60);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(65, 89);
             this.pictureBox11.TabIndex = 57;
@@ -167,7 +167,7 @@
             // pictureBox10
             // 
             this.pictureBox10.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox10.Location = new System.Drawing.Point(339, 60);
+            this.pictureBox10.Location = new System.Drawing.Point(410, 60);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(65, 89);
             this.pictureBox10.TabIndex = 56;

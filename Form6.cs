@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Casino_Royale
@@ -247,6 +248,8 @@ namespace Casino_Royale
                 dataGridView3.Refresh();
                 dataGridView4.Refresh();
                 dataGridView5.Refresh();
+                listView1.Refresh();
+                listView2.Refresh();
 
                 int rig = 0;
                 int rig2 = 0;
@@ -529,71 +532,71 @@ namespace Casino_Royale
                     //Cinquina tutti
                     if ((rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5) && cinq == 5)
                     {
-                        listView2.Clear();
-                        listView2.Items.Add("Cinquina! Parità");
-                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        
+                        listView1.Items.Add("Cinquina! Parità");
+                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
                         saldo2 += (costo / 3) * 1;
-                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
                         controlcinq++;
                     }
 
                     //Cinquina utente
                     if (rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5)
                     {
-                        listView2.Clear();
-                        listView2.Items.Add("Cinquina! vince l'utente");
-                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        
+                        listView1.Items.Add("Cinquina! vince l'utente");
+                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
                         saldo2 += (costo / 3) * 1;
-                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
                         controlcinq++;
                     }
-
-                    //Cinquina banco
-                    if (cinq == 5)
+                    else if (cinq == 5)
                     {
-                        listView2.Clear();
-                        listView2.Items.Add("Cinquina! vince il banco");
-                        listView2.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
+                        
+                        listView1.Items.Add("Cinquina! vince il banco");
+                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2) + Convert.ToString((costo / 3) * 1));
                         saldo2 -= (costo / 3) * 1;
-                        listView2.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
                         controlcinq++;
                     }
                 }
 
-                    //Tombola tutti
-                    if ((tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15) && (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15))
-                    {
-                        listView1.Clear();
-                        listView1.Items.Add("Tombola! Parità");
-                        saldo2 += (costo / 3) * 2;
-                        break;
-                    }
 
 
-                    //Tombola utente
-                    if (tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15)
-                    {
-                        listView2.Clear();
-                        listView2.Items.Add("Tombola! Vince l'utente ");
-                        saldo2 += (costo / 3) * 2;
-                        break;
-                    }
 
 
 
                     //Tombola banco
                     if (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15)
                     {
-                        listView1.Clear();
+                      
                         listView1.Items.Add("Tombola! Vince il banco ");
                         saldo2 -= (costo / 3) * 2;
                         break;
                     }
 
+                //Tombola utente
+                if (tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15)
+                {
 
+                    listView1.Items.Add("Tombola! Vince l'utente ");
+                    saldo2 += (costo / 3) * 2;
+                    break;
+                }
+
+
+                if ((tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15) && (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15))
+                {
+                   
+                    listView1.Items.Add("Tombola! Parità");
+                    saldo2 += (costo / 3) * 2;
+                    break;
+                }
+
+                //System.Threading.Thread.Sleep(1000);
             }
 
-            button2.Visible = true;
+            
         }
 
 
