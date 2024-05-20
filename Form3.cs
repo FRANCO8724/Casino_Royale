@@ -51,7 +51,12 @@ namespace Casino_Royale
 
         private void button2_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            Form7 home = new Form7();
+            home.ShowDialog(); 
 
+            listView1.Clear();
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
         }
 
         private void button3_Click(object sender, EventArgs e)
