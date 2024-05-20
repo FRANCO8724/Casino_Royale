@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -8,6 +10,8 @@ namespace Casino_Royale
     public partial class Form7 : Form
     {
         private static readonly HttpClient client = new HttpClient();
+        private List<int> randomNumbers = new List<int>();
+        private const string filePath = "randomNumbers.txt";
 
         public Form7()
         {
@@ -18,6 +22,7 @@ namespace Casino_Royale
 
         private async void Form7_Load(object sender, EventArgs e)
         {
+            LoadRandomNumbersFromFile();
             await GetRandomNumberAsync();
         }
 
@@ -31,12 +36,47 @@ namespace Casino_Royale
 
                 // Parsing della risposta JSON
                 response = response.Trim(new char[] { '[', ']', '\n' }); // Rimuove i caratteri '[' e ']' dalla risposta JSON
-                label1.Text = $"Numero casuale: {response}";
+                int randomNumber = int.Parse(response);
+
+                // Aggiungi il numero alla lista e salva sul file
+                randomNumbers.Add(randomNumber);
+                SaveRandomNumbersToFile();
+
+                // Aggiorna l'etichetta con il numero casuale
+                label1.Text = $"Numero casuale: {randomNumber}";
             }
             catch (Exception ex)
             {
                 // Gestione degli errori
                 MessageBox.Show($"Errore durante il recupero del numero casuale: {ex.Message}");
+            }
+        }
+
+        private void SaveRandomNumbersToFile()
+        { 
+            try
+            {
+                File.WriteAllLines(filePath, randomNumbers.ConvertAll(x => x.ToString()));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Errore durante il salvataggio dei numeri casuali: {ex.Message}");
+            }
+        }
+
+        private void LoadRandomNumbersFromFile()
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    string[] lines = File.ReadAllLines(filePath);
+                    randomNumbers = new List<int>(Array.ConvertAll(lines, int.Parse));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Errore durante il caricamento dei numeri casuali: {ex.Message}");
             }
         }
     }
