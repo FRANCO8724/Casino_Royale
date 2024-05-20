@@ -46,7 +46,7 @@ namespace Casino_Royale
             control[2] = -11;
             control[3] = -11;
             control[4] = -11;
-            int controlcinq = 0;
+          
 
             for (int i = 0; i < r.Length; i++)
             {
@@ -80,7 +80,6 @@ namespace Casino_Royale
             dataGridView3.Visible = false;
             dataGridView4.Visible = false;
             dataGridView5.Visible = false;
-            listView2.Visible = false;
         }
 
         private List<Riga> Geta()
@@ -170,7 +169,6 @@ namespace Casino_Royale
             textBox2.Visible = false;
             button1.Visible = false;
             button2.Visible= false;
-            listView2.Visible = true;
 
             listView1.Visible = true;
 
@@ -249,7 +247,6 @@ namespace Casino_Royale
                 dataGridView4.Refresh();
                 dataGridView5.Refresh();
                 listView1.Refresh();
-                listView2.Refresh();
 
                 int rig = 0;
                 int rig2 = 0;
