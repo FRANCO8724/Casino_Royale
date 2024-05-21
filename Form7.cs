@@ -13,13 +13,16 @@ namespace Casino_Royale
         private List<int> randomNumbers = new List<int>();
         private const string filePath = "randomNumbers.txt";
         int[] array = new int[37];
+        private int randomNumber;
 
         public Form7()
         {
             InitializeComponent();
             CreateButtons();
+            randomNumber = 0;
             this.WindowState = FormWindowState.Maximized;
             this.BackgroundImageLayout = ImageLayout.Stretch; // Adatta l'immagine per riempire l'intero form
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Impedisce il ridimensionamento del form
         }
 
         private async void Form7_Load(object sender, EventArgs e)
@@ -38,7 +41,9 @@ namespace Casino_Royale
 
                 // Parsing della risposta JSON
                 response = response.Trim(new char[] { '[', ']', '\n' }); // Rimuove i caratteri '[' e ']' dalla risposta JSON
-                int randomNumber = int.Parse(response);
+                randomNumber = int.Parse(response);
+
+                label1.Text = Convert.ToString(randomNumber);
 
                 // Aggiungi il numero alla lista e salva sul file
                 randomNumbers.Add(randomNumber);
@@ -74,6 +79,7 @@ namespace Casino_Royale
                 {
                     string[] lines = File.ReadAllLines(filePath);
                     randomNumbers = new List<int>(Array.ConvertAll(lines, int.Parse));
+                    
                 }
             }
             catch (Exception ex)
@@ -103,6 +109,7 @@ namespace Casino_Royale
 
                 btn.Location = new System.Drawing.Point(x, y);
                 btn.Click += new EventHandler(Button_Click);
+                btn.Anchor = AnchorStyles.Left | AnchorStyles.Top;
 
                 this.Controls.Add(btn);
             }
@@ -110,12 +117,6 @@ namespace Casino_Royale
 
         private void Button_Click(object sender, EventArgs e)
         {
-            // Metodo per resettare l'array impostando tutti gli elementi a 0
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = 38;
-            }
-
             Button btn = sender as Button;
             if (btn != null)
             {
@@ -129,25 +130,60 @@ namespace Casino_Royale
                         case 0:
                             // Operazione per il pulsante 0
                             MessageBox.Show("Operazione per il pulsante 0");
-                            array[0] = 0;
+                            textBox1.Text = "";
                             break;
                         case 1:
                             // Operazione per il pulsante 1
-                            MessageBox.Show("Operazione per il pulsante 1");
-                            array[1] = 1;
+                            array[1] = Convert.ToInt32(textBox1.Text);
+                            textBox1.Text = "";
                             break;
                         case 2:
                             // Operazione per il pulsante 2
-                            MessageBox.Show("Operazione per il pulsante 2");
-                            array[2] = 2;
+                            array[2] = Convert.ToInt32(textBox1.Text);
+                            textBox1.Text = "";
                             break;
                         // Aggiungi altri casi per i pulsanti rimanenti
                         default:
-                            MessageBox.Show(btn.Name + " cliccato");
-                            array[buttonNumber] = buttonNumber;
+                            array[buttonNumber] = Convert.ToInt32(textBox1.Text);
+                            MessageBox.Show("Operazione per il pulsante 0");
+                            textBox1.Text = "";
                             break;
                     }
                 }
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+
+            for(int i=0;i<array.Length;i++)
+            {
+                if (array[i] != 0 && randomNumber == i+1)
+                {
+                    listView1.Items.Add("Vince l'utente con il numero estratto: " + Convert.ToString(randomNumber) + "  vincita: " + Convert.ToString(array[i] * 18));
+                }
+                array[i] = 0;
+            }
+
+           
+
+          for(int i = 1;i<array.Length+1;i++)
+            {
+                for (int j = 0; j < randomNumbers.Count; j++)
+                {
+                    if (randomNumbers[j] == i)
+                    {
+                        array[i-1] += 1;
+                    }
+                }
+
+                listView1.Items.Add("probabilità: " + Convert.ToString(i) + ": " + Convert.ToString((array[i-1] / 37) *100));
             }
         }
     }

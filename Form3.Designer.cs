@@ -70,7 +70,7 @@
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(1252, 598);
+            this.button3.Location = new System.Drawing.Point(877, 527);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(402, 322);
             this.button3.TabIndex = 13;
@@ -84,7 +84,7 @@
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(1316, 12);
+            this.button1.Location = new System.Drawing.Point(941, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(383, 376);
             this.button1.TabIndex = 14;
@@ -93,6 +93,7 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F);
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(911, 723);
@@ -108,7 +109,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1819, 952);
+            this.ClientSize = new System.Drawing.Size(1444, 881);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button3);
