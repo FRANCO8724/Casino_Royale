@@ -33,6 +33,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -64,6 +66,7 @@
             this.listView1.Size = new System.Drawing.Size(653, 165);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
             // 
             // button1
             // 
@@ -74,7 +77,29 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Estrai";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.button1_ClickAsync);
+            // 
+            // listView2
+            // 
+            this.listView2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView2.HideSelection = false;
+            this.listView2.Location = new System.Drawing.Point(568, 326);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(653, 24);
+            this.listView2.TabIndex = 5;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.List;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Location = new System.Drawing.Point(330, 502);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form7
             // 
@@ -83,6 +108,8 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1233, 534);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.listView2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.textBox1);
@@ -103,5 +130,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.Button button2;
     }
 }

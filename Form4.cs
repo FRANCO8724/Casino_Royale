@@ -9,33 +9,38 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Casino_Royale
 {
     public partial class Form4 : Form
     {
         public Random random = new Random();
-        private List<int> numeriEstratti = new List<int>(); // Lista per tenere traccia dei numeri già estratti
-        int[] cart = new int[9];
-        string[] segno = new string[9];
-        decimal cont2;
-        int cont;
-        decimal premio;
-        decimal punt;
-        int u;
+        private List<int> numeriEstratti = new List<int>(); // Lista per tenere traccia i numeri già estratti
+        int[] cart = new int[9];//Array per tenere i valori delle carte sul tavolo memorizzati
+        string[] segno = new string[9];//Array per tenere i semi delle carte sul tavolo memorizzati
+        decimal cont2;//Variabile per tenere memorizzato il conto dell utente
+        int cont;//Variabile generale di controllo
+        int a;//Variabile per decidere se il banco punta o meno
+        decimal premio; //Variabile che tiene memorizzao il montepremi finale
+        decimal punt;//La puntata ovvero la quantità che l'utente o il banco punta a ogni mano
 
         public Form4(decimal saldo)
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;//Imposta la grandezza del form alla stessa grandezza dello schermo                                                         
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;// Impedisci la ridimensione del form
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Impedisce il ridimensionamento   
+            this.BackgroundImageLayout = ImageLayout.Stretch; // Adatta l'immagine per riempire l'intero form
 
+            //Imposto le variabili a 0
             cont2 = saldo;
             cont = 0;
             premio = 0;
             punt = 0;
-            int u = 0;
+            cont = 0;
 
-            this.BackgroundImageLayout = ImageLayout.Stretch; // Adatta l'immagine per riempire l'intero form
-            this.WindowState = FormWindowState.Maximized;
+            //Posiziona tutte le eventuali picturebox per mantenere la visualizzazione delle carte e della partita in un modo pulito      
             int x = 5; int y = 18;
             CenterControlInForm(pictureBox1, x, y);
             x = -70;
@@ -54,8 +59,8 @@ namespace Casino_Royale
             CenterControlInForm(pictureBox8, x, y);
             x = 40; y = 120;
             CenterControlInForm(pictureBox9, x, y);
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            cont = 0;
+            
+            //Gestisco l'inizio ovvero indico costo per entrare nascondendo quasi tutti gli elementi per non permettere all'utente di fare manovre che non dovrebbe eseguire
             listView1.Items.Add("Costo entrata: 5");
             button1.Visible = false;
             button2.Visible = false;
@@ -73,11 +78,12 @@ namespace Casino_Royale
             pictureBox9.Visible = false;
             label1.Visible = false;
 
-            listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-            listView1.Items.Add("Vincita: " + Convert.ToString(premio));
-            listView1.Items.Add("Puntata: " + Convert.ToString(premio));
+            AggiornamentoTab();
+
+            a = PuntataBanco();
         }
 
+        //In caso voglia cambiare gioco il tasto button3 mi permetterà di farlo
         private void button3_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -86,12 +92,15 @@ namespace Casino_Royale
 
         }
 
-        //Entra
+        //Entra nella partita
         private void button5_Click(object sender, EventArgs e)
         {
+            //Setto i valori a 0 in quanto se è la mia seconda partita evito che mantenga i valori di quella precedente
             premio = 0;
             punt = 0;
+            cont = 0;
 
+            //pulisco la listview e nascondo i tasti iniziali mostrando quelli necessari per la partita
             listView1.Clear();
             button1.Visible = true;
             button2.Visible = true;
@@ -100,12 +109,14 @@ namespace Casino_Royale
             button5.Visible = false;
             textBox1.Visible = true;
 
+            //Estraggo le prime immagini
             SetupPictureBox(pictureBox1, 2);
             SetupPictureBox(pictureBox2, 3);
             SetupPictureBox(pictureBox3, 4);
             SetupPictureBox(pictureBox6, 0);
             SetupPictureBox(pictureBox7, 1);
 
+            //E le mostro all'utente
             pictureBox1.Visible = true;
             pictureBox2.Visible = true;
             pictureBox3.Visible = true;
@@ -113,231 +124,145 @@ namespace Casino_Royale
             pictureBox7.Visible = true;
             pictureBox4.Visible = false;
             pictureBox5.Visible = false;
-
+            pictureBox8.Visible = false;
+            pictureBox9.Visible = false;
+            
+            //Nascondo quelle del banco
             pictureBox8.ImageLocation = "..\\..\\Resources\\cardback.png";
             pictureBox9.ImageLocation = "..\\..\\Resources\\cardback.png";
 
+            //Aggiorno i valori 
             cont2 -= 5;
             premio = 10;
             punt = 10;
 
-            listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-            listView1.Items.Add("Vincita: " + Convert.ToString(premio));
-            listView1.Items.Add("Puntata: " + Convert.ToString(punt));
+            //Funziona che aggiorna la listview
+            AggiornamentoTab();
 
+            //Controllo se il banco vuole puntare
+            a = PuntataBanco();
 
         }
 
-        //All-in
+        //All-in l'utente punta tutto quello che ha a disposizione
         private void button2_Click(object sender, EventArgs e)
         {
+            //Nasconde i bottoni di gioco e mostra quelli iniziali
             button1.Visible = false;
             button2.Visible = false;
             button4.Visible = false;
             textBox1.Visible = false;
             button3.Visible = true;
 
+            //Richiama una funzione che autocompleta tutto il banco 
+            allleft(cont);
+            
+
+            //Ovviamente la puntata sarà uguale a tutto quello che abbiamo 
             punt += cont2;
+            cont = 0;
 
-            if (cont == 0)
-            {
-                SetupPictureBox(pictureBox4, 5);
-                pictureBox4.Visible = true;
-
-                SetupPictureBox(pictureBox5, 6);
-                pictureBox5.Visible = true;
-
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                Controllo();
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-            }
-            if (cont == 1)
-            {
-                SetupPictureBox(pictureBox5, 6);
-                pictureBox5.Visible = true;
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                Controllo();
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-
-            }
-            if (cont == 2)
-            {
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                Controllo();
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-            }
+            //Controllo chi ha vinto per assegnare il premio
+            Controllo();
 
         }
 
         //Puntata
         private void button1_Click(object sender, EventArgs e)
         {
-            int o = Convert.ToInt32(textBox1.Text);
-
-            int r = random.Next(1, 3);
-
-            decimal banc=0;
-
-            if (u == 0)
+            //Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+            if (cont == 2 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
             {
-                if (r == 1)
-                {
-                    banc = puntBanco();
-                    u++;
-                }
+                //Estraggo le ultime carte
+                SetupPictureBox(pictureBox8, 7);
+                SetupPictureBox(pictureBox9, 8);
 
-                
-            }
+                //Rendo visibili le picture per visualizzare le carte appena estratte 
+                pictureBox8.Visible = true;
+                pictureBox9.Visible = true;
 
-            listView1.Clear();
-            listView1.Items.Add("Puntata banco: " + Convert.ToString(banc));
+                //Vedo chi vince fra i due
+                Controllo();
 
-            if (banc == o)
+                //Nascondo i tasti di gioco e rimostro quelli iniziali
+                button1.Visible = false;
+                button2.Visible = false;
+                button4.Visible = false;
+                textBox1.Visible = false;
+                button5.Visible = true;
+                button3.Visible = true;
+                listView2.Clear();
+
+            }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+            if (cont == 1 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
             {
-                punt = o * 2;
+                //Estraggo rendo visibile la nuova carta
+                SetupPictureBox(pictureBox5, 6);
+                pictureBox5.Visible = true;
 
-                if (cont == 0)
-                {
-                    u = 0;
-                    SetupPictureBox(pictureBox4, 5);
-                    pictureBox4.Visible = true;
-
-                }
-                if (cont == 1)
-                {
-                    u = 0;
-                    SetupPictureBox(pictureBox5, 6);
-                    pictureBox5.Visible = true;
-                }
-                if (cont == 2)
-                {
-                    u = 0;
-                    SetupPictureBox(pictureBox8, 7);
-                    SetupPictureBox(pictureBox9, 8);
-                    pictureBox8.Visible = true;
-                    pictureBox9.Visible = true;
-                    Controllo();
-                    button1.Visible = false;
-                    button2.Visible = false;
-                    button4.Visible = false;
-                    textBox1.Visible = false;
-                    button5.Visible = true;
-                    button3.Visible = true;
-                }
-
+                //Controllo se il banco vuole puntare
+                a = PuntataBanco();
                 cont++;
-            }
 
+                //aggiorno le variabili
+                punt += Convert.ToInt32(textBox1.Text)*2;
+                premio += punt;
+                cont2 -= Convert.ToInt32(textBox1.Text);
+
+                //Aggiorno la visualizzazione
+                listView1.Clear();
+                AggiornamentoTab();
+
+            }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+            if (cont == 0 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
+            {
+                //Estraggo rendo visibile la nuova carta
+                SetupPictureBox(pictureBox4, 5);
+                pictureBox4.Visible = true;
+                a = PuntataBanco();
+                cont++;
+
+                //Aggiorno i dati delle variabili
+                punt += Convert.ToInt32(textBox1.Text)*2;
+                premio += punt;
+                cont2 -= Convert.ToInt32(textBox1.Text);
+
+                //Aggiorno la visualizzazione
+                listView1.Clear();
+                AggiornamentoTab();
+
+            }
+            
             
         }
 
         //Lascia
         private void button4_Click(object sender, EventArgs e)
         {
+            //Nascondo i tasti di gioco e mostro quelli iniziali
             button1.Visible = false;
             button2.Visible = false;
             button4.Visible = false;
             textBox1.Visible = false;
             button3.Visible = true;
 
-            if (cont == 0)
-            {
-                SetupPictureBox(pictureBox4, 5);
-                pictureBox4.Visible = true;
+            //Funzione che aggiorna tutto il tavolo in base a se ci troviamo nella mano 1, 2 o 3
+            allleft(cont);
 
-                SetupPictureBox(pictureBox5, 6);
-                pictureBox5.Visible = true;
-
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-            }
-            if (cont == 1)
-            {
-                SetupPictureBox(pictureBox5, 6);
-                pictureBox5.Visible = true;
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-
-            }
-            if (cont == 2)
-            {
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-            }
-
+            //Aggiorno le variabili
             punt = 0;
             cont2 -= premio / 2;
 
-            listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-            listView1.Items.Add("Vincita: " + Convert.ToString(premio));
-            listView1.Items.Add("Puntata: " + Convert.ToString(punt));
+            //Aggiorno la visualizzazione
+            listView1.Clear();
+            listView2.Clear();
+            AggiornamentoTab();
         }
 
-        private void CenterControlInForm(Control control, int x1, int y1)
-        {
-            // Calcola la posizione X del controllo per centrarlo orizzontalmente
-            int x = ((this.ClientSize.Width - control.Width) / 2) + x1;
-
-            // Calcola la posizione Y del controllo per centrarlo verticalmente
-            int y = ((this.ClientSize.Height - control.Height) / 2) - y1;
-
-            // Imposta la posizione del controllo
-            control.Location = new System.Drawing.Point(x, y);
-
-            // Imposta l'ancoraggio del controllo al centro del form
-            control.Anchor = AnchorStyles.None;
-        }
-
+        //Funzione che estrae i numeri in modo casuale
         private string Estrazione(int b)
-        {
+        {            
+            //Essendo che ho salvato le immagini da 1 a 52(un mazzo) in ordine di scale divido nei vari casi
             int randomNumber = random.Next(1, 53);
             do
             {
@@ -361,6 +286,7 @@ namespace Casino_Royale
                 segno[b] = "quadri";
             }
 
+            //Ciclo che mi permette di individuare il numero e posizionarlo nell array
             for (int i = 0; i < 13; i++)
             {
 
@@ -368,142 +294,145 @@ namespace Casino_Royale
                 {
                     cart[b] = i + 1;
                 }
-            }
+            }           
 
+            //Aggiungo all' elenco dei numeri estratti in modo da non ripeterlo succesivamente
             numeriEstratti.Add(randomNumber);
 
             string resourceName = randomNumber.ToString(); // Converte il numero in una stringa
             return resourceName;
         }
 
-        private void SetupPictureBox(PictureBox pictureBox, int a)
-        {
-            pictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox.ImageLocation = "..\\..\\Resources\\" + Estrazione(a) + ".png";
-
-
-        }
-
         private void Controllo()
         {
+            //Imposto i punti dei due giocatori a 0
             int puntdealer = 0;
             int puntuser = 0;
 
+            //dichiaro le posizioni dei valori nell array 0 1 per l'utente e 7 e 8 per il banco
             int a = 0;
             int b = 1;
             int c = 7;
             int d = 8;
 
-            if (ColoreUser(a, b) == 1 && ScalaUser(a, b) == 1)
+            //Dichiaro la classe
+            Carta card = new Carta();
+
+            //Se le funzioni restituiscono un valore di uno allora viene assegnato il relativo punteggio all'utente
+            if (card.ColoreUser(a, b,segno) == 1 && card.ScalaUser(a, b,cart) == 1)
             {
                 puntuser = 8;
                 listView1.Items.Add("Scala Reale");
             }
-            else if (PokerUser(a, b) == 1)
+            else if (card.PokerUser(a, b,cart) == 1)
             {
                 puntuser = 7;
                 listView1.Items.Add("Poker");
             }
-            else if (Trisuser(a, b) == 1 && CoppiaUser(a, b) == 1)
+            else if (card.Trisuser(a, b, cart) == 1 && card.CoppiaUser(a, b, cart) == 1)
             {
                 puntuser = 6;
                 listView1.Items.Add("Full");
             }
-            else if (ColoreUser(a, b) == 1)
+            else if (card.ColoreUser(a, b,segno) == 1)
             {
                 puntuser = 5;
                 listView1.Items.Add("Colore");
             }
-            else if (ScalaUser(a, b) == 1)
+            else if (card.ScalaUser(a, b, cart) == 1)
             {
                 puntuser = 4;
                 listView1.Items.Add("Scala");
             }
-            else if (Trisuser(a, b) == 1)
+            else if (card.Trisuser(a, b, cart) == 1)
             {
                 puntuser = 3;
                 listView1.Items.Add("Tris");
             }
-            else if (DoppiaCoppiaUser(a, b) == 1)
+            else if (card.DoppiaCoppiaUser(a, b, cart) == 1)
             {
                 puntuser = 2;
                 listView1.Items.Add("Doppia Coppia");
             }
-            else if (CoppiaUser(a, b) == 1)
+            else if (card.CoppiaUser(a, b, cart) == 1)
             {
                 puntuser = 1;
                 listView1.Items.Add("Coppia");
             }
 
 
-            //Banco
-            if (ColoreUser(c, d) == 1 && ScalaUser(c, d) == 1)
+            ////Se le funzioni restituiscono un valore di uno allora viene assegnato il relativo punteggio al banco
+            if (card.ColoreUser(c, d,segno) == 1 && card.ScalaUser(c, d, cart) == 1)
             {
                 puntdealer = 8;
                 listView1.Items.Add("Scala Reale");
             }
-            else if (PokerUser(c, d) == 1)
+            else if (card.PokerUser(c, d,cart) == 1)
             {
                 puntdealer = 7;
                 listView1.Items.Add("Poker");
             }
-            else if (Trisuser(c, d) == 1 && CoppiaUser(c, d) == 1)
+            else if (card.Trisuser(c, d, cart) == 1 && card.CoppiaUser(c, d, cart) == 1)
             {
                 puntdealer = 6;
                 listView1.Items.Add("Full");
             }
-            else if (ColoreUser(c, d) == 1)
+            else if (card.ColoreUser(c, d, segno) == 1)
             {
                 puntdealer = 5;
                 listView1.Items.Add("Colore");
             }
-            else if (ScalaBanco() == 1)
+            else if (card.ScalaBanco(cart) == 1)
             {
                 puntdealer = 4;
                 listView1.Items.Add("Scala");
             }
-            else if (Trisuser(c, d) == 1)
+            else if (card.Trisuser(c, d,cart) == 1)
             {
                 puntdealer = 3;
                 listView1.Items.Add("Tris");
             }
-            else if (DoppiaCoppiaUser(c, d) == 1)
+            else if (card.DoppiaCoppiaUser(c, d,cart) == 1)
             {
                 puntdealer = 2;
                 listView1.Items.Add("Doppia Coppia");
             }
-            else if (CoppiaUser(c, d) == 1)
+            else if (card.CoppiaUser(c, d,cart) == 1)
             {
                 puntdealer = 1;
                 listView1.Items.Add("Coppia");
             }
 
 
-
+            //Confronto fra i punteggi che decreta il vincitore in base a chi ha i punti maggiori
             if (puntdealer > puntuser)
             {
+                //Aggiungo alla visualizzazione il vincitore
+                listView1.Clear();
                 listView1.Items.Add("Vince il banco");
+
+                //Aggiorno i valori
                 premio += punt * 2;
                 cont2 -= punt;
 
-                listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-                listView1.Items.Add("Vincita: 0");
-                listView1.Items.Add("Puntata: 0");
+                //Aggiungo i valori aggiornati
+                AggiornamentoTab();
             }
             if (puntdealer < puntuser)
             {
+                //Aggiungo alla visualizzazione il vincitore
+                listView1.Clear();
                 listView1.Items.Add("Vince l'utente");
 
+                //Aggiorno i valori
                 premio += punt * 2;
                 cont2 += premio;
 
-                listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-                listView1.Items.Add("Vincita: 0");
-                listView1.Items.Add("Puntata: 0");
+                //Aggiungo i valori aggiornati
+                AggiornamentoTab();
             }
 
-
+            //in caso nessuno dei due giocatori ha ottenuto punti si va ad osservare chi ha la carta più alta fra i due 
             if (puntuser == 0 && puntdealer == 0)
             {
                 if (cart[0] > cart[7] && cart[0] > cart[8])
@@ -524,358 +453,158 @@ namespace Casino_Royale
                 }
             }
 
+            //In caso si arrivi in una situazione di punti ancora uguali abbiamo una situazione di parità
             if (puntuser == puntdealer)
             {
+                //Aggiungo alla visualizzazione con la parità
                 listView1.Clear();
                 listView1.Items.Add("Parità");
 
+                //Aggiorno i valori
                 premio += punt * 2;
                 cont2 += premio / 2;
 
-                listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-                listView1.Items.Add("Vincita: 0");
-                listView1.Items.Add("Puntata: 0");
+                //Aggiungo i valori aggiornati
+                AggiornamentoTab();
             }
             if (puntuser == 11)
             {
+                //Aggiungo alla visualizzazione il vincitore
                 listView1.Clear();
                 listView1.Items.Add("Vince l'utente carta più alta");
 
+                //Aggiungo i valori aggiornati
                 premio += punt * 2;
                 cont2 += premio;
 
-                listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-                listView1.Items.Add("Vincita: 0");
-                listView1.Items.Add("Puntata: 0");
+                //Aggiungo i valori aggiornati
+                AggiornamentoTab();
             }
             if (puntdealer == 11)
             {
+                //Aggiungo alla visualizzazione il vincitore
                 listView1.Clear();
                 listView1.Items.Add("Vince il banco carta più alta");
 
+                //Aggiungo i valori aggiornati
                 premio += punt * 2;
                 cont2 -= punt;
 
-                listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
-                listView1.Items.Add("Vincita: 0");
-                listView1.Items.Add("Puntata: 0");
+                //Aggiungo i valori aggiornati
+                AggiornamentoTab();
             }
 
+            //Ripulisco il contenitore dei numeri estratti
             numeriEstratti.Clear();
 
         }
 
-        private int ColoreUser(int a, int b)
+        private void CenterControlInForm(Control control, int x1, int y1)
         {
-            int controllo = 0;
+            // Calcola la posizione X del controllo per centrarlo orizzontalmente
+            int x = ((this.ClientSize.Width - control.Width) / 2) + x1;
 
-            int color1 = 0;
+            // Calcola la posizione Y del controllo per centrarlo verticalmente
+            int y = ((this.ClientSize.Height - control.Height) / 2) - y1;
 
-            if (segno[a] == segno[b])
+            // Imposta la posizione del controllo
+            control.Location = new System.Drawing.Point(x, y);
+
+            // Imposta l'ancoraggio del controllo al centro del form
+            control.Anchor = AnchorStyles.None;
+        }
+        //Funziona che autocompleta le mani 1, 2 o 3 a seconda diquando abbiamo premuto il tasto ripsetto alla puntata
+        public void allleft(int cont)
+        {
+            if (cont == 0)
             {
-                for (int j = 2; j < 7; j++)
-                {
-                    if (segno[j] == segno[a])
-                    {
-                        color1++;
-                    }
-                    if (color1 == 3)
-                    {
-                        controllo = 1;
+                SetupPictureBox(pictureBox4, 5);
+                pictureBox4.Visible = true;
 
-                    }
-                }
+                SetupPictureBox(pictureBox5, 6);
+                pictureBox5.Visible = true;
+
+                SetupPictureBox(pictureBox8, 7);
+                SetupPictureBox(pictureBox9, 8);
+                pictureBox8.Visible = true;
+                pictureBox9.Visible = true;
+                button1.Visible = false;
+                button2.Visible = false;
+                button4.Visible = false;
+                textBox1.Visible = false;
+                button5.Visible = true;
+                button3.Visible = true;
+            }
+            if (cont == 1)
+            {
+                SetupPictureBox(pictureBox5, 6);
+                pictureBox5.Visible = true;
+                SetupPictureBox(pictureBox8, 7);
+                SetupPictureBox(pictureBox9, 8);
+                pictureBox8.Visible = true;
+                pictureBox9.Visible = true;
+                button1.Visible = false;
+                button2.Visible = false;
+                button4.Visible = false;
+                textBox1.Visible = false;
+                button5.Visible = true;
+                button3.Visible = true;
+
+            }
+            if (cont == 2)
+            {
+                SetupPictureBox(pictureBox8, 7);
+                SetupPictureBox(pictureBox9, 8);
+                pictureBox8.Visible = true;
+                pictureBox9.Visible = true;
+                button1.Visible = false;
+                button2.Visible = false;
+                button4.Visible = false;
+                textBox1.Visible = false;
+                button5.Visible = true;
+                button3.Visible = true;
+            }
+        }
+
+        //funzione che inserisce e setta l'immagine estratta casualmente all'interno della picture box
+        private void SetupPictureBox(PictureBox pictureBox, int a)
+        {
+            pictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;//Setto la posizione della picturebox
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom; //Setto la dimensione dell'immagine
+            pictureBox.ImageLocation = "..\\..\\Resources\\" + Estrazione(a) + ".png"; //Inserisco l'immagine recuperandola dalle risorse locali
+
+
+        }
+
+        private int PuntataBanco()
+        {
+            //Estraggo un numero random
+            a = random.Next(1, 10);
+
+            //In caso il banco punti estraggo casualmente il valore della puntata e lo mostro all'utente
+            if (a < 6)
+            {
+                listView2.Clear();
+                a = random.Next(20, 80);
+                listView2.Items.Add("Il banco ha puntato: " + Convert.ToString(a));
             }
             else
             {
-                for (int j = 2; j < 7; j++)
-                {
-                    if (segno[j] == segno[a])
-                    {
-                        color1++;
-                    }
-                    if (color1 > 4)
-                    {
-                        controllo = 1;
-
-                    }
-                }
-                for (int j = 2; j < 7; j++)
-                {
-                    if (segno[j] == segno[b])
-                    {
-                        color1++;
-                    }
-                    if (color1 > 4)
-                    {
-                        controllo = 1;
-
-                    }
-                }
+                listView2.Clear();
+                a = 0;
+                listView2.Items.Add("Il banco ha puntato: bussato");
             }
-
-
-            return controllo;
-        }
-
-        private int ScalaUser(int a, int b)
-        {
-            int controllo = 0;
-
-            int scala = 0;
-
-            int[] arr = new int[7];
-
-            for (int i = 0; i < 7; i++)
-            {
-                arr[i] = cart[i];
-            }
-
-            Array.Sort(arr);
-
-            if ((arr[a] == cart[a] || arr[a] == cart[b]) || (arr[a] == cart[b] || arr[b] == cart[b]))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (arr[i] + 1 == arr[i + 1])
-                    {
-                        scala++;
-                    }
-                    if (scala == 5)
-                    {
-                        controllo = 1;
-                    }
-                }
-
-                scala = 0;
-
-                for (int i = 1; i < 6; i++)
-                {
-                    if (arr[i] + 1 == arr[i + 1])
-                    {
-                        scala++;
-                    }
-                    if (scala == 5)
-                    {
-                        controllo = 1;
-                    }
-                }
-
-            }
-
-            return controllo;
-
-
-        }
-
-        private int ScalaBanco()
-        {
-            int controllo = 0;
-
-            int scala = 0;
-
-            int[] arr = new int[7];
-
-            for (int i = 2; i < 7; i++)
-            {
-                arr[i] = cart[i];
-            }
-
-            arr[0] = cart[7];
-            arr[1] = cart[8];
-
-            Array.Sort(arr);
-
-            if ((arr[0] == cart[0] || arr[0] == cart[1]) || (arr[1] == cart[0] || arr[0] == cart[0]))
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (arr[i] + 1 == arr[i + 1])
-                    {
-                        scala++;
-                    }
-                    if (scala == 5)
-                    {
-                        controllo = 1;
-                    }
-                }
-
-                scala = 0;
-
-                for (int i = 1; i < 6; i++)
-                {
-                    if (arr[i] + 1 == arr[i + 1])
-                    {
-                        scala++;
-                    }
-                    if (scala == 5)
-                    {
-                        controllo = 1;
-                    }
-                }
-
-            }
-
-            return controllo;
-
-
-        }
-        private int PokerUser(int a, int b)
-        {
-            int controllo = 0;
-
-            int cont1 = 0;
-            int cont2 = 0;
-            int cont3 = 0;
-
-            for (int i = 2; i < 7; i++)
-            {
-                if (cart[a] == cart[i])
-                {
-                    cont1++;
-                }
-                if (cart[b] == cart[i])
-                {
-                    cont2++;
-                }
-                if (cart[a] == cart[i] && cart[b] == cart[i])
-                {
-                    if (cart[a] == cart[i])
-                    {
-                        cont3++;
-                    }
-                }
-
-            }
-
-            if (cont1 == 3 || cont2 == 3 || cont3 == 2)
-            {
-                controllo = 1;
-            }
-
-            return controllo;
-        }
-
-        private int Trisuser(int a, int b)
-        {
-            int controllo = 0;
-            int cont1 = 0;
-            int cont2 = 0;
-            int cont3 = 0;
-
-            if (cart[a] == cart[b])
-            {
-                for (int i = 2; i < 7; i++)
-                {
-                    if (cart[a] == cart[i])
-                    {
-                        cont1++;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 2; i < 7; i++)
-                {
-                    if (cart[a] == cart[i])
-                    {
-                        cont2++;
-                    }
-                }
-
-                for (int i = 2; i < 7; i++)
-                {
-                    if (cart[b] == cart[i])
-                    {
-                        cont3++;
-                    }
-                }
-            }
-
-            if (cont1 == 1 || cont2 == 2 || cont3 == 2)
-            {
-                controllo++;
-            }
-
-            return controllo;
-        }
-        private int CoppiaUser(int a, int b)
-        {
-            int controllo = 0;
-
-            int cont1 = 0;
-            int cont2 = 0;
-            int cont3 = 0;
-
-            if (cart[a] == cart[b])
-            {
-                cont1++;
-            }
-            else
-            {
-                for (int i = 2; i < 7; i++)
-                {
-                    if (cart[a] == cart[i])
-                    {
-                        cont2++;
-                    }
-                }
-
-                for (int i = 2; i < 7; i++)
-                {
-                    if (cart[b] == cart[i])
-                    {
-                        cont3++;
-                    }
-                }
-            }
-
-            if (cont1 == 1 || cont2 == 1 || cont3 == 1)
-            {
-                controllo++;
-            }
-
-            return controllo;
-        }
-
-        private int DoppiaCoppiaUser(int a, int b)
-        {
-            int controllo = 0;
-
-            int cont1 = 0;
-            int cont2 = 0;
-
-            for (int i = 2; i < 7; i++)
-            {
-                if (cart[a] == cart[i])
-                {
-                    cont1 = 1;
-                }
-            }
-
-            for (int i = 2; i < 7; i++)
-            {
-                if (cart[b] == cart[i])
-                {
-                    cont2 = 1;
-                }
-            }
-
-            if (cont1 == 1 && cont2 == 1)
-            {
-                controllo++;
-            }
-
-            return controllo;
-        }
-
-        public int puntBanco()
-        {
-            int a = random.Next(20, 100);
 
             return a;
         }
 
+        private void AggiornamentoTab()
+        {
+            //Mostro all'utente il suo conto e l'andamento della partita
+            listView1.Items.Add("Saldo: " + Convert.ToString(cont2));
+            listView1.Items.Add("Vincita: " + Convert.ToString(premio));
+            listView1.Items.Add("Puntata: " + Convert.ToString(premio));
+        }
 
     }
 }

@@ -35,6 +35,7 @@ namespace Casino_Royale
             dataGridView3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             dataGridView4.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             dataGridView5.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
+
             r = new int[90];
             cinquina = 0;
             tombola = 0;
@@ -590,19 +591,10 @@ namespace Casino_Royale
                     break;
                 }
 
-                //System.Threading.Thread.Sleep(1000);
             }
 
             
         }
-
-
-
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-        }
-
 
         private void AggiornaDataGridView(int numero)
         {

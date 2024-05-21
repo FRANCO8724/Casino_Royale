@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="BlackJack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAANQAAADUCAYAAADk3g0YAAAABGdBTUEAALGPC/xhBQAA/8dJREFUeF7k
         vQd8VFX6Pn6TSTIl0zOZmUwy6b33hIRAAoTee5VeRECKKEURC02KKCIiTcGurH3t67quvffuqmtfXRuW
@@ -1313,7 +1313,7 @@
         zAqx8iI1H8oKtnSfkibIaswLtmqVLJVJ/5OEyrP+P+0BGJnLvB4zAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Roulette.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAfQAAAFHCAYAAABXiL5RAAAABGdBTUEAALGPC/xhBQAA/8dJREFUeF7s
         vQWcpFeV/t9j7e7u7u7u7t3TPdLT4+4+mYnrxHUixIUIgSQECBEICSEGCZIEorBIIAssu+iiz/88t/qE
@@ -5088,7 +5088,7 @@
         vXTx4gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Bingo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgEAAAFtCAYAAACeOLndAAAABGdBTUEAALGPC/xhBQAA/8dJREFUeF7s
         vQeYnWW5LjwpU9JDQgmhg3RBFAXbFhWxAAKioCgKIkUEQUSKSO+BABFCekgIaaSXSZlM7733XtZas3rv
@@ -8846,7 +8846,7 @@
         NAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="poker.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAZ4AAAGSCAYAAADTvqd0AAAABGdBTUEAALGPC/xhBQAA/8dJREFUeF7s
         /QWYV9XbPQ5PN93d3YgCIiLYgiihGIioWEiIICBId3c3iCjdnUM30x0MQ3c367/W3p8Dow/f53l+//f3
@@ -11232,7 +11232,7 @@
   <data name="$this.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAB4AAAAPzCAYAAABWWxG6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAA/7JJREFUeF7sXWVgHEfS9ZIYzGwZEkPgwnCxY7ZlTuww4104X5iZORcmh5mZmZnJ
+        vAAADrwBlbxySQAA/7JJREFUeF7sXWVgHEfS9ZIYzGwZEkPgwnCxY7ZlTuww4104X5iZORcmh5mZmZnJ
         YY7DnDhov69edfdoNBoZJe2utn88zexooKH6dUFDm+SaCTSKNZKKlCC9Bn+3QWLNJBLjEmgzTM6HJJBY
         Xc5Xb9MQI+T/k9ogOZXPtJF3JJCaIr/jvuPh4eFRYCAfpqYIhwo3kiMT8rvN6AiPhqBcO1TOa/kMudnw
         atpytPJ1zHc8PDw8WjMS1E0jUJ1TOFH5VXTWxDDBkGQMt5rrCeHe5CQ5Fy5OT+FzDd8Z9+18QmKqOWak

@@ -32,7 +32,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -61,21 +60,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(85, 224);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.label1.Location = new System.Drawing.Point(12, 221);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(293, 13);
+            this.label1.Size = new System.Drawing.Size(364, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Inserire quantità di denaro con cui si vuole entrare nel casinò";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.label2.Location = new System.Drawing.Point(12, 421);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(293, 20);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Il casinò non permette di entrare con più di 3000 euro";
             // 
             // Form2
             // 
@@ -83,7 +73,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
@@ -100,6 +89,5 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
     }
 }

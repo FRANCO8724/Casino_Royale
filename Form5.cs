@@ -13,104 +13,91 @@ namespace Casino_Royale
 {
     public partial class Form5 : Form
     {
-        private decimal punt2;
-        private decimal conto;
-        private int user;
-        private int dealer;
-        private int l;
-        private int l2;
-        public Random random = new Random();
+        private decimal punt2; //Soldi che punta l'utente
+        private decimal conto; //Variabile per tenere traccia del conto dell'utente
+        private int user;//Valore carte user
+        private int dealer;//Valore carte dealer
+        private int l;//Controllore user
+        private int l2;//Controllore dealer
         private List<int> numeriEstratti = new List<int>(); // Lista per tenere traccia dei numeri già estratti
+        private Black jack;
 
 
-        public Form5(decimal punt)
+        public Form5(decimal conto2)
         {
             InitializeComponent();
-            conto = punt;
+
+            //Setto tutti i valori inizili
+            conto = conto2;
             user = 0;
             dealer = 0;
-            l = 2;
+            l = 2;           
             l2 = 9;
+            Black jack = new Black();
 
-            this.BackgroundImageLayout = ImageLayout.Stretch;
-            this.WindowState = FormWindowState.Maximized;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+            this.WindowState = FormWindowState.Maximized;//Imposta la grandezza del form alla stessa grandezza dello schermo                                                         
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;// Impedisci la ridimensione del form
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Impedisce il ridimensionamento   
+            this.BackgroundImageLayout = ImageLayout.Stretch; // Adatta l'immagine per riempire l'intero form
 
+            //Nascondo i bottoni di gioco
             button2.Visible = false;
             button4.Visible = false;
 
-            pictureBox1.Visible = false;
-            pictureBox2.Visible = false;
-            pictureBox3.Visible = false;
-            pictureBox4.Visible = false;
-            pictureBox5.Visible = false;
-            pictureBox6.Visible = false;
-            pictureBox7.Visible = false;
-            pictureBox8.Visible = false;
-            pictureBox9.Visible = false;
-            pictureBox10.Visible = false;
-            pictureBox11.Visible = false;
-            pictureBox12.Visible = false;
-            pictureBox13.Visible = false;
-            pictureBox14.Visible = false;
-            pictureBox15.Visible = false;
-            label2.Visible = false;
+            //Funzione che nasconde le picture box
+            pic();
 
+            //Mostro i dati relativi al conto e alla puntata all'utente
             listView1.Items.Clear();
             listView1.Items.Add("puntata: " + punt2);
             listView1.Items.Add("Saldo: " + conto);
         }
 
+        //Tasto per decidere la puntata della giocata 
         private void button1_Click(object sender, EventArgs e)
         {
+            //Setto il valore degli elementi
             user = 0;
             dealer = 0;
             l = 2;
             l2 = 9;
-            button3.Visible = false;
-            pictureBox1.Visible = false;
-            pictureBox2.Visible = false;
-            pictureBox3.Visible = false;
-            pictureBox4.Visible = false;
-            pictureBox5.Visible = false;
-            pictureBox6.Visible = false;
-            pictureBox7.Visible = false;
-            pictureBox8.Visible = false;
-            pictureBox9.Visible = false;
-            pictureBox10.Visible = false;
-            pictureBox11.Visible = false;
-            pictureBox12.Visible = false;
-            pictureBox13.Visible = false;
-            pictureBox14.Visible = false;
-            pictureBox15.Visible = false;
-            
-            
 
+            //Funzione che nasconde le picture box richiamata in modo che se l'utente vogli subito giocare una partita dopo averne fatta già una le picturebox si nascondano nuovamente
+            pic();
+
+
+            //Se il testo è presente
             if (textBox1.Text != "")
             {
+                //Converto il testo in numero per poterlo aggiungere alla portata
                 punt2 = Convert.ToInt32(textBox1.Text);
 
+                //Condizione per cui la puntata dev essere maggiore di 0 e minore del conto totale
                 if (punt2 > 0 && punt2 <= conto)
                 {
-                   
+                   //Nascondo gli elementi di entrata
                     textBox1.Visible = false;
                     button1.Visible = false;
                     label2.Visible = false;
+
+                    //Aggiorno i dati
                     conto -= punt2;
 
+                    //Visualizzo i dati aggiornati
                     listView1.Items.Clear();
                     listView1.Items.Add("puntata: " + punt2);
                     listView1.Items.Add("Saldo: " + conto);
 
+                    //Mostro gli elementi di gioco
                     button2.Visible = true;
                     button4.Visible = true;
-
                     pictureBox1.Visible = true;
                     pictureBox9.Visible = true;
 
-                    user = SetupPictureBox(pictureBox1, user);
+                    //Estraggo la prima carta
+                    user = jack.SetupPictureBox(pictureBox1, user);
 
+                    //Estraggo l'immagine con il restro della carta e la inserisco nel button
                     pictureBox9.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
                     pictureBox9.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox9.ImageLocation = "..\\..\\Resources\\" + "cardback" + ".png";
@@ -119,7 +106,8 @@ namespace Casino_Royale
                 }
                 else
                 {
-                    label2.Visible = true;
+                    //Se le condizioni non vengono rispettate messaggio di errore
+                    //label2.Visible = true;
                     textBox1.Text = "";
                 }
 
@@ -127,8 +115,11 @@ namespace Casino_Royale
                   
         }
 
+        //Funzione che chiede una carta aggiuntiva
         private void button4_Click_1(object sender, EventArgs e)
         {
+            // Controllo se il punteggio dell'utente è maggiore o uguale a 21
+            // Se sì, nascondo i pulsanti per richiedere una carta o stare
             if (user >= 21)
             {
                 button2.Visible = false;
@@ -137,16 +128,21 @@ namespace Casino_Royale
             }
             else
             {
+                // Trovo la PictureBox corrispondente e la rendo visibile
                 PictureBox pictureBox = Controls.Find("pictureBox" + l.ToString(), true).FirstOrDefault() as PictureBox;
                 pictureBox.Visible = true;
-                user = SetupPictureBox(pictureBox, user);
+
+                // Aggiungo il valore della nuova carta al punteggio dell'utente
+                user = jack.SetupPictureBox(pictureBox, user,numeriEstratti);
             }
 
+            // Controllo nuovamente se il punteggio dell'utente è maggiore o uguale a 21
             if (user >= 21)
             {
                 button2.Visible = false;
                 button4.Visible = false;
 
+                // Gestisco i vari casi di risultato del gioco
                 if (user == 21 && dealer == 21)
                 {
                     listView1.Items.Clear();
@@ -204,25 +200,29 @@ namespace Casino_Royale
                     listView1.Items.Add("Vince l'utente");
                 }
 
+                // Rendo visibili alcuni controlli per permettere un nuovo gioco o altre azioni
                 textBox1.Visible = true;
                 button1.Visible = true;
                 button3.Visible = true;
             }
 
-            l++;
+            l++;// Incremento l'indice della PictureBox
         }
 
+        // Evento associato al pulsante che gestisce il turno del dealer
         private void button2_Click(object sender, EventArgs e)
         {
 
             for (int i = 0; i < 16; i++)
             {
 
+                // Se il punteggio del dealer è maggiore o uguale a 17, smetto di pescare carte
                 if (dealer >= 17)
                 {
                     button2.Visible = false;
                     button4.Visible = false;
 
+                    // Gestisco i vari casi di risultato del gioco
                     if (user == 21 && dealer == 21)
                     {
                         listView1.Items.Clear();
@@ -279,6 +279,8 @@ namespace Casino_Royale
                         listView1.Items.Add("Saldo: " + conto);
                         listView1.Items.Add("Vince l'utente");
                     }
+
+                    // Rendo visibili alcuni controlli per permettere un nuovo gioco o altre azioni
                     textBox1.Visible = true;
                     button1.Visible = true;
                     button3.Visible = true;
@@ -288,83 +290,48 @@ namespace Casino_Royale
                 }
                 else
                 {
+                    // Trovo la PictureBox corrispondente e la rendo visibile
                     PictureBox pictureBox = Controls.Find("pictureBox" + l2.ToString(), true).FirstOrDefault() as PictureBox;
                     pictureBox.Visible = true;
-                    dealer = SetupPictureBox(pictureBox, dealer);
+                    // Aggiungo il valore della nuova carta al punteggio del dealer
+                    dealer = jack.SetupPictureBox(pictureBox, dealer);
                 }
 
-                l2++;
+                l2++;// Incremento l'indice della PictureBox
             }
 
 
 
         }
 
-        private int Estrazione()
-        {
-            int randomNumber;
-            do
-            {
-                randomNumber = random.Next(1, 53);
-            } while (numeriEstratti.Contains(randomNumber));
-
-            numeriEstratti.Add(randomNumber);
-            return randomNumber;
-        }
-
-        private int SetupPictureBox(PictureBox pictureBox, int a)
-        {
-            pictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-            int b = Estrazione();
-            pictureBox.ImageLocation = "..\\..\\Resources\\" + b + ".png";
-
-            if (b == 1 || b == 14 || b == 27 || b == 40)
-            {
-                a += 11;
-            }
-            else
-            {
-                if (b < 11)
-                {
-                    a += b;
-                }
-                else
-                {
-                    if (b > 13 && b < 24)
-                    {
-                        a += (b - 13);
-                    }
-                    else
-                    {
-                        if (b > 26 && b < 37)
-                        {
-                            a += (b - 26);
-                        }
-                        else
-                        {
-                            if (b > 39 && b < 50)
-                            {
-                                a += (b - 39);
-                            }
-                        }
-                    }
-                }
-            }
-            if (b == 11 || b == 12 || b == 13 || b == 24 || b == 25 || b == 26 || b == 37 || b == 38 || b == 39 || b == 50 || b == 51 || b == 52)
-            {
-                a += 10;
-            }
-
-            return a;
-        }
-
+        //Funzione che ritorna al form3 
         private void button3_Click_1(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form3 casinò = new Form3(conto);
-            casinò.ShowDialog();
+        {            
+            this.Hide();//Chiusura form5
+            Form3 casinò = new Form3(conto);//Apertura form3
+            casinò.ShowDialog();//Mostra form3
         }
 
+        private void pic()
+        {
+            //Nascondo tutte le picturebox
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            pictureBox3.Visible = false;
+            pictureBox4.Visible = false;
+            pictureBox5.Visible = false;
+            pictureBox6.Visible = false;
+            pictureBox7.Visible = false;
+            pictureBox8.Visible = false;
+            pictureBox9.Visible = false;
+            pictureBox10.Visible = false;
+            pictureBox11.Visible = false;
+            pictureBox12.Visible = false;
+            pictureBox13.Visible = false;
+            pictureBox14.Visible = false;
+            pictureBox15.Visible = false;
+            label2.Visible = false;
+
+        }
     }
 }

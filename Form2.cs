@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,44 +14,29 @@ namespace Casino_Royale
 {
     public partial class Form2 : Form
     {
-        public decimal saldo;
+        private decimal saldo;//Creo la variabile saldo
         public Form2()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
-            this.MinimumSize = new Size(1100, 600); // Imposta la dimensione minima della finestra
-            saldo = 0;
-            label2.Visible = false;
+            this.WindowState = FormWindowState.Maximized; //Adatta il form alla grandezza dello schermo
+            this.MinimumSize = new Size(1100, 600); //Imposta la dimensione minima della finestra in modo da evitare che scompaiano bottoni o altri oggetti presenti nel form
+            saldo = 0;//Assegno il valore saldo iniziale = a 0
         }
 
+        //Quando l'utente preme il bottone gioca vengono eseguite tutte le operazioni contenute al suo interno
         private void button1_Click(object sender, EventArgs e)
-        {            
+        {
+            saldo = Convert.ToInt32(textBox1.Text);
 
-            if (textBox1.Text != "")
-            {
-                saldo = Convert.ToDecimal(textBox1.Text);
-
-                if (saldo > 0 && saldo <= 3000)
-                {
-                    
-                    textBox1.Visible = false;
-                    button1.Visible = false;
-                    label1.Visible = false;
-                    saldo = Convert.ToDecimal(textBox1.Text);
-
-                    this.Hide();
-                    Form3 home = new Form3(saldo);
-                    home.ShowDialog();
-
-                }
-                else
-                {
-                    label2.Visible = true;
-                    textBox1.Text = "";
-                }
-
-            }
-            
+            this.Hide(); //Nasconde l'attuale form ovvero form3
+            Form3 home = new Form3(saldo); //Passo il conto dell'utente nel gioco del BlackJack
+            home.ShowDialog();//Mostra form5
         }
+
+
+
     }
+
 }
+    
+
