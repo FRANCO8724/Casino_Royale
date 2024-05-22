@@ -176,6 +176,7 @@ namespace Casino_Royale
 
         private void button1_ClickAsync(object sender, EventArgs e)
         {
+            label1.Visible = true;
             listView1.Items.Clear();
             listView2.Items.Clear();
 
@@ -208,10 +209,15 @@ namespace Casino_Royale
             }
 
             button2.Visible = true;
+            button1.Visible = false;
+            textBox1.Visible = false;
+            pictureBox1.Visible = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            pictureBox1.Visible = false;
+            label1.Visible = false;
             CreateButtons();
 
             button2.Visible = false;

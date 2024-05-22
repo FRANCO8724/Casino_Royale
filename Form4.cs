@@ -24,6 +24,7 @@ namespace Casino_Royale
         int a;//Variabile per decidere se il banco punta o meno
         decimal premio; //Variabile che tiene memorizzao il montepremi finale
         decimal punt;//La puntata ovvero la quantità che l'utente o il banco punta a ogni mano
+        Carta card;//Dichiaro la classe
 
         public Form4(decimal saldo)
         {
@@ -78,9 +79,14 @@ namespace Casino_Royale
             pictureBox9.Visible = false;
             label1.Visible = false;
 
+            //Aggiorna la listview con saldo, puntata,...
             AggiornamentoTab();
 
+            //Controlla se il banco già nella prima mano vuole puntare
             a = PuntataBanco();
+
+            //Inizializzo la classe
+            card = new Carta(cart, segno);
         }
 
         //In caso voglia cambiare gioco il tasto button3 mi permetterà di farlo
@@ -314,9 +320,6 @@ namespace Casino_Royale
             int b = 1;
             int c = 7;
             int d = 8;
-
-            //Dichiaro la classe
-            Carta card = new Carta();
 
             //Se le funzioni restituiscono un valore di uno allora viene assegnato il relativo punteggio all'utente
             if (card.ColoreUser(a, b,segno) == 1 && card.ScalaUser(a, b,cart) == 1)

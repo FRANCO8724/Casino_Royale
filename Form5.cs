@@ -20,7 +20,7 @@ namespace Casino_Royale
         private int l;//Controllore user
         private int l2;//Controllore dealer
         private List<int> numeriEstratti = new List<int>(); // Lista per tenere traccia dei numeri già estratti
-        private Black jack;
+        Random random = new Random();//Variabile che mi permette di estrarre i numeri in modo randomico
 
 
         public Form5(decimal conto2)
@@ -33,7 +33,6 @@ namespace Casino_Royale
             dealer = 0;
             l = 2;           
             l2 = 9;
-            Black jack = new Black();
 
             this.WindowState = FormWindowState.Maximized;//Imposta la grandezza del form alla stessa grandezza dello schermo                                                         
             this.FormBorderStyle = FormBorderStyle.FixedDialog;// Impedisci la ridimensione del form
@@ -95,7 +94,7 @@ namespace Casino_Royale
                     pictureBox9.Visible = true;
 
                     //Estraggo la prima carta
-                    user = jack.SetupPictureBox(pictureBox1, user);
+                    user = SetupPictureBox(pictureBox1, user);
 
                     //Estraggo l'immagine con il restro della carta e la inserisco nel button
                     pictureBox9.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
@@ -133,77 +132,15 @@ namespace Casino_Royale
                 pictureBox.Visible = true;
 
                 // Aggiungo il valore della nuova carta al punteggio dell'utente
-                user = jack.SetupPictureBox(pictureBox, user,numeriEstratti);
+                user =SetupPictureBox(pictureBox, user);
             }
 
             // Controllo nuovamente se il punteggio dell'utente è maggiore o uguale a 21
             if (user >= 21)
             {
-                button2.Visible = false;
-                button4.Visible = false;
 
-                // Gestisco i vari casi di risultato del gioco
-                if (user == 21 && dealer == 21)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0" );
-                    conto -= punt2;
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Parità");
-                }
-                if (user > 21)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince il banco");
-                }
-                if (user == 21)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    conto += (punt2 * 2);
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince l'utente");
+               Controlli();
 
-                }
-                if (dealer == 21)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    conto -= punt2;
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince il banco");
-                }
-                if (dealer > 21)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    conto += (punt2 * 2);
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince l'utente");
-                }
-                if (user < 21 && dealer < 21 && user < dealer)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    conto -= punt2;
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince il banco");
-                }
-                if (user < 21 && dealer < 21 && user > dealer)
-                {
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: 0");
-                    conto += (punt2 * 2);
-                    listView1.Items.Add("Saldo: " + conto);
-                    listView1.Items.Add("Vince l'utente");
-                }
-
-                // Rendo visibili alcuni controlli per permettere un nuovo gioco o altre azioni
-                textBox1.Visible = true;
-                button1.Visible = true;
-                button3.Visible = true;
             }
 
             l++;// Incremento l'indice della PictureBox
@@ -219,72 +156,8 @@ namespace Casino_Royale
                 // Se il punteggio del dealer è maggiore o uguale a 17, smetto di pescare carte
                 if (dealer >= 17)
                 {
-                    button2.Visible = false;
-                    button4.Visible = false;
-
-                    // Gestisco i vari casi di risultato del gioco
-                    if (user == 21 && dealer == 21)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto -= punt2;
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Parità");
-                    }
-                    if (user == 21)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto += (punt2 * 2);
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince l'utente");
-
-                    }
-                    if ( dealer == 21)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto -= punt2;
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince il banco");
-                    }
-                    if (user > 21)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince il banco");
-                    }
-                    if (dealer > 21)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto += (punt2 * 2);
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince l'utente");
-                    }
-                    if (user < 21 && dealer < 21 && user < dealer)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto -= punt2;
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince il banco");
-                    }
-                    if (user < 21 && dealer < 21 && user > dealer)
-                    {
-                        listView1.Items.Clear();
-                        listView1.Items.Add("puntata: 0");
-                        conto += (punt2 * 2);
-                        listView1.Items.Add("Saldo: " + conto);
-                        listView1.Items.Add("Vince l'utente");
-                    }
-
-                    // Rendo visibili alcuni controlli per permettere un nuovo gioco o altre azioni
-                    textBox1.Visible = true;
-                    button1.Visible = true;
-                    button3.Visible = true;
-
+                    //Verifica le condizioni per cui il banco o l'utente vinca
+                    Controlli();
 
                     break;
                 }
@@ -294,7 +167,7 @@ namespace Casino_Royale
                     PictureBox pictureBox = Controls.Find("pictureBox" + l2.ToString(), true).FirstOrDefault() as PictureBox;
                     pictureBox.Visible = true;
                     // Aggiungo il valore della nuova carta al punteggio del dealer
-                    dealer = jack.SetupPictureBox(pictureBox, dealer);
+                    dealer = SetupPictureBox(pictureBox, dealer);
                 }
 
                 l2++;// Incremento l'indice della PictureBox
@@ -302,6 +175,75 @@ namespace Casino_Royale
 
 
 
+        }
+
+        //Funzione che imposta L'immagine nella picture box e ne salva i valori
+        public int SetupPictureBox(PictureBox pictureBox, int a)
+        {
+            //Setta la visualizzazione dell'immagine all'interno della'picturebox
+            pictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            //Funzione che strae in modo randomico e senza ripetizioni le immagini
+            int b = Estrazione();
+            //Inserisce l'immagine estratta all'interno della picturebox
+            pictureBox.ImageLocation = "..\\..\\Resources\\" + b + ".png";
+
+            //In base al numero della carta estratta setto i valori 
+            //Valore in caso la carta è un asso
+            if (b == 1 || b == 14 || b == 27 || b == 40)
+            {
+                a += 11;
+            }
+            else
+            {
+                //Valori per ttutte le altre carte
+                if (b < 11)
+                {
+                    a += b;
+                }
+                else
+                {
+                    if (b > 13 && b < 24)
+                    {
+                        a += (b - 13);
+                    }
+                    else
+                    {
+                        if (b > 26 && b < 37)
+                        {
+                            a += (b - 26);
+                        }
+                        else
+                        {
+                            if (b > 39 && b < 50)
+                            {
+                                a += (b - 39);
+                            }
+                        }
+                    }
+                }
+            }//Valore per le figure
+            if (b == 11 || b == 12 || b == 13 || b == 24 || b == 25 || b == 26 || b == 37 || b == 38 || b == 39 || b == 50 || b == 51 || b == 52)
+            {
+                a += 10;
+            }
+
+            return a;
+        }
+
+        //Funzione che estrae randomicamente una carta dalla cartella resources
+        public int Estrazione()
+        {
+            int randomNumber;
+            do
+            {
+                //Estrazione casuale di un numero tra 1 e 52
+                randomNumber = random.Next(1, 53);
+            } while (numeriEstratti.Contains(randomNumber));//continuo ad estrarre finchè il numero è diverso da quelli presenti nella lista
+
+            numeriEstratti.Add(randomNumber);//Aggiungo il valore appena estratto alla lista numeriestratti in modo da non ripeterlo successivamente
+            return randomNumber;
         }
 
         //Funzione che ritorna al form3 
@@ -332,6 +274,75 @@ namespace Casino_Royale
             pictureBox15.Visible = false;
             label2.Visible = false;
 
+        }
+
+        private void Controlli()
+        {
+            button2.Visible = false;
+            button4.Visible = false;
+
+            // Gestisco i vari casi di risultato del gioco e aggiorno la variabile conto e puntata
+            if (user == 21 && dealer == 21)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto -= punt2;
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Parità");
+            }
+            if (user == 21)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto += (punt2 * 2);
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince l'utente");
+
+            }
+            if (dealer == 21)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto -= punt2;
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince il banco");
+            }
+            if (user > 21)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince il banco");
+            }
+            if (dealer > 21)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto += (punt2 * 2);
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince l'utente");
+            }
+            if (user < 21 && dealer < 21 && user < dealer)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto -= punt2;
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince il banco");
+            }
+            if (user < 21 && dealer < 21 && user > dealer)
+            {
+                listView1.Items.Clear();
+                listView1.Items.Add("puntata: 0");
+                conto += (punt2 * 2);
+                listView1.Items.Add("Saldo: " + conto);
+                listView1.Items.Add("Vince l'utente");
+            }
+
+            // Rendo visibili alcuni controlli per permettere un nuovo gioco o altre azioni
+            textBox1.Visible = true;
+            button1.Visible = true;
+            button3.Visible = true;
         }
     }
 }

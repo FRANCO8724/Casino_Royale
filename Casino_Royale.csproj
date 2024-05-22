@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Black.cs" />
+    <Compile Include="Bingo.cs" />
     <Compile Include="Carta.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

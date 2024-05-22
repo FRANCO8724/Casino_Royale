@@ -9,9 +9,18 @@ namespace Casino_Royale
     //Classe che contiene tutte le funzioni del poker tenere a mente che gli elementi sono memorizzati i primi due elementi carte utente i sucessivi 5 carte banco e gli ultimi due le due carte del banco
     internal class Carta
     {
-      /* se le carte nella mano di uno dei due giocatori sono dello stesso segno allora scorro tutto l'array e mi bastera che il color1 arrivi a 3 per avere 5 carte dello stesso segno
-       in caso in cui non siano uguali devo controllare tutti e due scorrendo tutto l array due volte confrontando ciascuna delle due volte 
-      una carta dell'utente con quelle del banco e se il conteggio arriva a 4 allora siamo in presenza del colore*/
+
+        public int[] Carte { get; set; }
+        public string[] Segno { get; set; }
+
+        public Carta(int[] carte, string[] segno)
+        {
+            Carte = carte;
+            Segno = segno;
+        }
+        /* se le carte nella mano di uno dei due giocatori sono dello stesso segno allora scorro tutto l'array e mi bastera che il color1 arrivi a 3 per avere 5 carte dello stesso segno
+         in caso in cui non siano uguali devo controllare tutti e due scorrendo tutto l array due volte confrontando ciascuna delle due volte 
+        una carta dell'utente con quelle del banco e se il conteggio arriva a 4 allora siamo in presenza del colore*/
         public int ColoreUser(int a, int b, string[] segno)
         {
             int controllo = 0;
@@ -327,4 +336,5 @@ namespace Casino_Royale
         }
 
     }
+
 }
