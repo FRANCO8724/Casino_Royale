@@ -13,9 +13,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 namespace Casino_Royale
 {
     public partial class Form3 : Form
-    {
-        //Dichiaro la nuova variabile per acquisire il valore dal form2 successivamente
-        public decimal saldo2;
+    {     
+        public decimal saldo2;//Dichiaro la nuova variabile per acquisire il valore dal form2 successivamente
+        Funzio fun;//Dichiaro la classe
         public Form3(decimal saldo)
         {
             InitializeComponent();
@@ -29,6 +29,10 @@ namespace Casino_Royale
             listView1.Clear(); //ripulisci la listview da eventuali elementi già presenti
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2)); //Stampa la quantità di denaro a cui l'utente ha accesso
 
+            fun = new Funzio();//Inizializzo la classe
+
+            //Funzione che nasconde i tasti di gioco in cui l'utente sia a 0 con il saldo e mostra l'unica azione che gli è consentita
+            Outcasinò(saldo2);
         }
 
         //Bottone che permette di accedere al gioco del Poker una volta premuto chiudendo il form3 e aprendo quello relativo al Poker
@@ -40,7 +44,8 @@ namespace Casino_Royale
 
             //Aggiorna la listview con il conto nuovo in modo che venga preso dal form4 nel caso in cui l'utente voglia cambiare gioco 
             listView1.Clear();
-            listView1.Items.Add("Saldo: " +  Convert.ToString(saldo2));
+            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+            
         }
 
         //Bottone che permette di accedere al gioco della roulette una volta premuto chiudendo il form3 e aprendo quello relativo alla roulette
@@ -53,6 +58,7 @@ namespace Casino_Royale
             //Aggiorna la listview con il conto nuovo in modo che venga preso dal form7 nel caso in cui l'utente voglia cambiare gioco 
             listView1.Clear();
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+
         }
 
         //Bottone che permette di accedere al gioco del Bingo una volta premuto chiudendo il form3 e aprendo quello relativo al Bingo
@@ -64,7 +70,11 @@ namespace Casino_Royale
 
             //Aggiorna la listview con il conto nuovo in modo che venga preso dal form6 nel caso in cui l'utente voglia cambiare gioco 
             listView1.Clear();
+            //Funzione per togliere numeri decimali dopo la virgola del saldo inutili 
+
+            listView1.Clear();
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+
         }
 
         //Bottone che permette di accedere al gioco del blackjack una volta premuto chiudendo il form3 e aprendo quello relativo al blackjack
@@ -77,6 +87,22 @@ namespace Casino_Royale
             //Aggiorna la listview con il conto nuovo in modo che venga preso dal form5 nel caso in cui l'utente voglia cambiare gioco 
             listView1.Clear();
             listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+
+        }
+
+        //Funzione che nasconde i tasti di gioco in cui l'utente sia a 0 con il saldo e mostra l'unica azione che gli è consentita
+        private void Outcasinò(decimal a)
+        {
+            if (a < 0)
+            {
+
+                BlackJack.Visible = false;
+                poker.Visible = false;
+                Bingo.Visible = false;
+                Roulette.Visible = false;
+
+                MessageBox.Show("Devi uscire dal casinò");
+            }
         }
 
     }

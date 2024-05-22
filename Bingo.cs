@@ -25,14 +25,14 @@ public class Bingo
                 if (UserCont[j + startIndex, j2] == 0)
                 {
                     rig++;
-                   
+
                 }
                 if (rig == 5)
                 {
                     return rig;
                 }
             }
- 
+
         }
 
         return rig;

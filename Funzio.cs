@@ -10,7 +10,9 @@ namespace Casino_Royale
 {
     internal class Funzio
     {
-        public void Inserimento(string text,decimal saldo)
+        /*Funzione che controlla che il numero sia diverso da vuoto o da un carattere e in caso fosse falso restituisco true altrimenti
+         restituisco falso in caso di falso mostro anche un messaggio di errore all'utente*/
+        public bool Inserimento(string text,decimal saldo)
         {
             int numericValue;
             var a = text;
@@ -19,20 +21,15 @@ namespace Casino_Royale
             if (isNumber == false)
             {
                 MessageBox.Show("Non puoi lasciare vuoto o inserire lettere");
+                return false;
 
             }
             else
             {
-                if (Convert.ToInt32(text) < 3001 && Convert.ToInt32(text) > 0)
-                {
-                    MessageBox.Show(" La quantità inserità deve essere maggiore di 0 e inferiore o uguale a 3000");
-                }
-                else
-                {
-                    saldo = Convert.ToInt32(a);
-                }
+                
+                    return true;
+                
             }
-
 
         }
 

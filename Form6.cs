@@ -24,6 +24,7 @@ namespace Casino_Royale
         public int controlcinq;//Varaibile che controlla la cinquina
         Random random = new Random();//Classe che permette di estrarre numeri in modo randomico
         private Bingo bingo;//Dichiaro la classe
+        Funzio fun;//Dichiaro la classe
 
         //Dichiaro le righe ovvero i contenitori del tabellone, cartella1, cartella2, cartella3 e cartella4
         private List<Riga> a { get; set; }
@@ -47,6 +48,8 @@ namespace Casino_Royale
             dataGridView3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             dataGridView4.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico
             dataGridView5.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Imposta la modalità di ridimensionamento automatico          
+
+            fun = new Funzio();//Inizializzo la classe
 
             //2 array di controllo
             r = new int[90];
@@ -183,251 +186,286 @@ namespace Casino_Royale
         private void button1_Click(object sender, EventArgs e)
         {
             controlcinq = 0;
-            //Mostro il tabellone e nasconod gli oggetti di inizio
-            dataGridView1.Visible = true;
-            label1.Visible = false;
-            label2.Visible = false;
-            textBox1.Visible = false;
-            textBox2.Visible = false;
-            button1.Visible = false;
-            button2.Visible= false;
-            listView1.Visible = true;
 
-            //Salvo la variabile costo con la quantità inserità dall'utente
-            costo = Convert.ToInt32(textBox2.Text);
+            //Funzione che controlla se I dati mmessi nella textbox possono essere accettati 
+            bool qq = fun.Inserimento(textBox2.Text, saldo2);
 
-            //Diminuisco il saldo in base alla quantità inserita dall'utente
-            saldo2 -= costo;
-
-            //Aggiorna la visualizzazione degli elementi
-            listView1.Clear();
-            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
-            listView1.Items.Add("Cinquina: " + Convert.ToString((costo / 3) * 1));
-            listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
-
-            //Salva il numero delle cartelle che l'utente ha richiesto
-            ncartelle = Convert.ToInt32(textBox1.Text);
-
-            //Mostra le cartelle in base a quante ne ha richieste l'utente
-            if (ncartelle == 1)
+            //In caso in cui possono essere accettati eseguo il codice
+            if (qq == true)
             {
-                dataGridView2.Visible = true;
-            }
-            if (ncartelle == 2)
-            {
-                dataGridView2.Visible = true;
-                dataGridView3.Visible = true;
-            }
-            if (ncartelle == 3)
-            {
-                dataGridView2.Visible = true;
-                dataGridView3.Visible = true;
-                dataGridView4.Visible = true;
-            }
-            if (ncartelle == 4)
-            {
-                dataGridView2.Visible = true;
-                dataGridView3.Visible = true;
-                dataGridView4.Visible = true;
-                dataGridView5.Visible = true;
-            }
 
-            //Dichiaro la lista e inizio a estrarre i numeri in modo casuale
-            List<int> numeriEstratti = new List<int>();
-            for (int i = 0; i < 90; i++)
-            {
-                //Finche il numero estratto è diverso da quello nella lista continuo ad estrarre in caso contrario salvo nella lista il nuovo valore
-                int numeroEstratto;
-                do
+                bool qq2 = fun.Inserimento(textBox1.Text, saldo2);
+
+                if (qq2 == true)
                 {
-                    numeroEstratto = random.Next(1, 91);
-                } while (numeriEstratti.Contains(numeroEstratto));
-                numeriEstratti.Add(numeroEstratto);
 
-                // Imposta il numero estratto a 0 nelle DataGridView e setto il colore a rosso
-                AggiornaDataGridView(numeroEstratto);
-
-                //Elimino dall'array delle cartelle il numero appena estratto
-                for (int i3 = 0; i3 < 12; i3++)
-                {
-                    for (int i4 = 0; i4 < 5; i4++)
+                    //Condizione che controlla che l'utente non stia puntando più di quello che ha
+                    if (Convert.ToInt32(textBox1.Text) > 0 && Convert.ToInt32(textBox2.Text) <= saldo2)
                     {
-                        if (usercont[i3, i4] == numeroEstratto)
+                        if (Convert.ToInt32(textBox1.Text) > 0 && Convert.ToInt32(textBox1.Text) <= 4)
                         {
-                            usercont[i3, i4] = 0;                            
+                            //Salvo la variabile costo con la quantità inserità dall'utente
+                            costo = Convert.ToInt32(textBox2.Text);
+
+                            //Diminuisco il saldo in base alla quantità inserita dall'utente
+                            saldo2 -= costo;
+
+                            //Mostro il tabellone e nasconod gli oggetti di inizio
+                            dataGridView1.Visible = true;
+                            label1.Visible = false;
+                            label2.Visible = false;
+                            textBox1.Visible = false;
+                            textBox2.Visible = false;
+                            button1.Visible = false;
+                            button2.Visible = false;
+                            listView1.Visible = true;
+
+                            //Aggiorna la visualizzazione degli elementi
+                            listView1.Clear();
+                            listView1.Items.Add("Saldo: " + Convert.ToString(saldo2));
+                            listView1.Items.Add("Cinquina: " + Convert.ToString((costo / 3) * 1));
+                            listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+
+                            //Salva il numero delle cartelle che l'utente ha richiesto
+                            ncartelle = Convert.ToInt32(textBox1.Text);
+
+                            //Mostra le cartelle in base a quante ne ha richieste l'utente
+                            if (ncartelle == 1)
+                            {
+                                dataGridView2.Visible = true;
+                            }
+                            if (ncartelle == 2)
+                            {
+                                dataGridView2.Visible = true;
+                                dataGridView3.Visible = true;
+                            }
+                            if (ncartelle == 3)
+                            {
+                                dataGridView2.Visible = true;
+                                dataGridView3.Visible = true;
+                                dataGridView4.Visible = true;
+                            }
+                            if (ncartelle == 4)
+                            {
+                                dataGridView2.Visible = true;
+                                dataGridView3.Visible = true;
+                                dataGridView4.Visible = true;
+                                dataGridView5.Visible = true;
+                            }
+
+                            //Dichiaro la lista e inizio a estrarre i numeri in modo casuale
+                            List<int> numeriEstratti = new List<int>();
+                            for (int i = 0; i < 90; i++)
+                            {
+                                //Finche il numero estratto è diverso da quello nella lista continuo ad estrarre in caso contrario salvo nella lista il nuovo valore
+                                int numeroEstratto;
+                                do
+                                {
+                                    numeroEstratto = random.Next(1, 91);
+                                } while (numeriEstratti.Contains(numeroEstratto));
+                                numeriEstratti.Add(numeroEstratto);
+
+                                // Imposta il numero estratto a 0 nelle DataGridView e setto il colore a rosso
+                                AggiornaDataGridView(numeroEstratto);
+
+                                //Elimino dall'array delle cartelle il numero appena estratto
+                                for (int i3 = 0; i3 < 12; i3++)
+                                {
+                                    for (int i4 = 0; i4 < 5; i4++)
+                                    {
+                                        if (usercont[i3, i4] == numeroEstratto)
+                                        {
+                                            usercont[i3, i4] = 0;
+                                        }
+                                    }
+                                }
+
+                                //Elimino dall'array del tabellone il numero appena estratto
+                                for (int q = 0; q < 90; q++)
+                                {
+                                    if (r2[q] == numeroEstratto)
+                                    {
+                                        r2[q] = 0;
+                                        break;
+                                    }
+                                }
+
+                                //Aggiorno la visualizzazione delle varie dategridview
+                                dataGridView1.Refresh();
+                                dataGridView2.Refresh();
+                                dataGridView3.Refresh();
+                                dataGridView4.Refresh();
+                                dataGridView5.Refresh();
+                                listView1.Refresh();
+
+                                //Variabioli per tenere traccia delle tombole e cinquine
+                                int rig = 0;
+                                int rig2 = 0;
+                                int rig3 = 0;
+                                int rig4 = 0;
+                                int tomb = 0;
+                                int tomb2 = 0;
+                                int tomb3 = 0;
+                                int tomb4 = 0;
+
+                                // Inizializza l'oggetto Bingo
+                                bingo = new Bingo(usercont, r2);
+
+                                //Funzione che in base a quante cartelle ci sono controlla le situazioni di cinquina o tombola dell'utente
+                                if (ncartelle == 1)
+                                {
+                                    tomb = bingo.Tombola(0);
+                                    rig = bingo.CinqTombUtente(0, rig, tomb);
+
+                                }
+
+                                if (ncartelle == 2)
+                                {
+                                    tomb2 = bingo.Tombola(3);
+                                    rig = bingo.CinqTombUtente(0, rig, tomb);
+                                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
+                                }
+
+                                if (ncartelle == 3)
+                                {
+                                    tomb3 = bingo.Tombola(6);
+                                    rig = bingo.CinqTombUtente(0, rig, tomb);
+                                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
+                                    rig3 = bingo.CinqTombUtente(6, rig3, tomb3);
+                                }
+
+                                if (ncartelle == 4)
+                                {
+                                    tomb4 = bingo.Tombola(9);
+                                    rig = bingo.CinqTombUtente(0, rig, tomb);
+                                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
+                                    rig3 = bingo.CinqTombUtente(6, rig3, tomb3);
+                                    rig4 = bingo.CinqTombUtente(9, rig4, tomb4);
+                                }
+
+                                //Ciclo che controlla se ci troviamo in presenza di ciqnuina nel tabellone
+                                int cinq = 0;
+                                for (int q2 = 0; q2 < 17; q2++)
+                                {
+                                    cinq = 0;
+
+                                    //Analizza i primi 5 valori delle righe e gli ultimi 5 delle righe se almeno uno di questi ha tutti i valori a 0 allora abbiamo cinquina
+                                    for (int q3 = 1; q3 < 6; q3++)
+                                    {
+                                        if (r2[q3 * q2] == 0)
+                                        {
+                                            cinq++;
+                                        }
+                                    }
+                                    if (cinq == 5)
+                                    {
+                                        break;
+                                    }
+
+                                }
+
+                                //Funzione che in caso i primi 5 elementi ogni 3 righe sono uguali a 0 allora il banco avrà fatto tombola
+                                int tomb6 = 0;
+                                tomb6 = bingo.TombolaTabellone(tomb6, 0, 10, 20);
+
+                                int tomb7 = 0;
+                                tomb7 = bingo.TombolaTabellone(tomb7, 5, 15, 25);
+
+                                int tomb8 = 0;
+                                tomb8 = bingo.TombolaTabellone(tomb8, 30, 40, 50);
+
+                                int tomb9 = 0;
+                                tomb9 = bingo.TombolaTabellone(tomb9, 35, 45, 55);
+
+                                int tomb10 = 0;
+                                tomb10 = bingo.TombolaTabellone(tomb10, 60, 70, 80);
+
+                                int tomb11 = 0;
+                                tomb11 = bingo.TombolaTabellone(tomb11, 65, 75, 85);
+
+                                //Controllo delle cinquine
+                                if (controlcinq == 0)
+                                {
+                                    //Cinquina tutti in caso il numero estratto faccia fare cinquina ad entrambi abbiamo una situazione di parità
+                                    if ((rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5) && cinq == 5)
+                                    {
+
+                                        listView1.Items.Add("Cinquina! Parità");
+                                        saldo2 += (costo / 3);
+                                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));
+                                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                                        controlcinq++;
+                                    }//Cinquina solo l'utente
+
+                                    if (rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5)
+                                    {
+
+                                        listView1.Items.Add("Cinquina! vince l'utente");
+                                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));
+                                        saldo2 += (costo / 3) * 2;
+                                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                                        controlcinq++;
+                                    }//Cinquina solo il banco
+                                    else if (cinq == 5)
+                                    {
+
+                                        listView1.Items.Add("Cinquina! vince il banco");
+                                        saldo2 -= (costo / 3) * 1;
+                                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));
+                                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
+                                        controlcinq++;
+                                    }
+
+                                }
+
+                                //Caso in cui solo il banco fa tombola
+                                if (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15)
+                                {
+
+                                    listView1.Items.Add("Tombola! Vince il banco ");
+                                    saldo2 -= (costo / 3) * 2;
+                                    break;
+                                }
+
+                                //Caso in cui solo l'utente fa tombola
+                                if (tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15)
+                                {
+
+                                    listView1.Items.Add("Tombola! Vince l'utente ");
+                                    saldo2 += (costo / 3) * 2;
+                                    break;
+                                }
+
+                                //Caso in cui il numero estratto sia quello che permette la tombola ad entrambi i giocatori
+                                if ((tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15) && (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15))
+                                {
+
+                                    listView1.Items.Add("Tombola! Parità");
+                                    saldo2 += (costo / 3) * 2;
+                                    break;
+                                }
+
+                            }
+                            //Mostra il tasto return per tornare al menù
+                            button2.Visible = true;
+                        }
+                        else
+                        {
+                            //Mostra all'utente la motivazione del perchè non può continuare a giocare
+                            MessageBox.Show("Saldo superiore a quello che puoi puntare");
+                            textBox1.Clear();
+                            textBox2.Clear();
                         }
                     }
-                }
-
-                //Elimino dall'array del tabellone il numero appena estratto
-                for (int q = 0; q < 90; q++)
-                {
-                    if (r2[q] == numeroEstratto)
+                    else
                     {
-                        r2[q] = 0;
-                        break;
+                        //Mostra all'utente la motivazione del perchè non può continuare a giocare
+                        MessageBox.Show("Saldo superiore a quello che puoi puntare");
+                        textBox1.Clear();
+                        textBox2.Clear();
                     }
                 }
-
-                //Aggiorno la visualizzazione delle varie dategridview
-                dataGridView1.Refresh();
-                dataGridView2.Refresh();
-                dataGridView3.Refresh();
-                dataGridView4.Refresh();
-                dataGridView5.Refresh();
-                listView1.Refresh();
-
-                //Variabioli per tenere traccia delle tombole e cinquine
-                int rig = 0;
-                int rig2 = 0;
-                int rig3 = 0;
-                int rig4 = 0;
-                int tomb = 0;
-                int tomb2 = 0;
-                int tomb3 = 0;
-                int tomb4 = 0;
-
-                // Inizializza l'oggetto Bingo
-                bingo = new Bingo(usercont, r2);
-
-                //Funzione che in base a quante cartelle ci sono controlla le situazioni di cinquina o tombola dell'utente
-                if (ncartelle == 1)
-                {
-                    tomb = bingo.Tombola(0);
-                    rig = bingo.CinqTombUtente(0, rig, tomb);
-                    
-                }
-
-                if (ncartelle == 2)
-                {
-                    tomb2 = bingo.Tombola(3);
-                    rig = bingo.CinqTombUtente(0, rig, tomb);
-                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
-                }
-
-                if (ncartelle == 3)
-                {
-                    tomb3 = bingo.Tombola(6);
-                    rig = bingo.CinqTombUtente(0, rig, tomb);
-                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
-                    rig3 = bingo.CinqTombUtente(6, rig3, tomb3);
-                }
-
-                if (ncartelle == 4)
-                {
-                    tomb4 = bingo.Tombola(9);
-                    rig = bingo.CinqTombUtente(0, rig, tomb);
-                    rig2 = bingo.CinqTombUtente(3, rig2, tomb2);
-                    rig3 = bingo.CinqTombUtente(6, rig3, tomb3);
-                    rig4 = bingo.CinqTombUtente(9, rig4, tomb4);
-                }
-
-                //Ciclo che controlla se ci troviamo in presenza di ciqnuina nel tabellone
-                int cinq = 0;
-                for (int q2 = 0; q2 < 17; q2++)
-                {
-                    cinq = 0;
-
-                    //Analizza i primi 5 valori delle righe e gli ultimi 5 delle righe se almeno uno di questi ha tutti i valori a 0 allora abbiamo cinquina
-                    for (int q3 = 1; q3 < 6; q3++)
-                    {
-                        if (r2[q3 * q2] == 0)
-                        {
-                            cinq++;
-                        }
-                    }
-                    if (cinq == 5)
-                    {
-                        break;
-                    }
-
-                } 
-
-                //Funzione che in caso i primi 5 elementi ogni 3 righe sono uguali a 0 allora il banco avrà fatto tombola
-                int tomb6 = 0;
-                tomb6 = bingo.TombolaTabellone(tomb6,0,10,20);
-
-                int tomb7 = 0;
-                tomb7 = bingo.TombolaTabellone(tomb7, 5, 15, 25);
-
-                int tomb8 = 0;
-                tomb8 = bingo.TombolaTabellone(tomb8, 30, 40, 50);
-
-                int tomb9 = 0;
-                tomb9 = bingo.TombolaTabellone(tomb9, 35, 45, 55);
-
-                int tomb10 = 0;
-                tomb10 = bingo.TombolaTabellone(tomb10, 60, 70, 80);
-
-                int tomb11 = 0;
-                tomb11 = bingo.TombolaTabellone(tomb11, 65, 75, 85);
-
-                //Controllo delle cinquine
-                if (controlcinq == 0)
-                {
-                    //Cinquina tutti in caso il numero estratto faccia fare cinquina ad entrambi abbiamo una situazione di parità
-                    if ((rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5) && cinq == 5)
-                    {
-
-                       listView1.Items.Add("Cinquina! Parità");
-                        saldo2 += (costo / 3);
-                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));                       
-                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
-                        controlcinq++;
-                    }//Cinquina solo l'utente
-
-                    if (rig == 5 || rig2 == 5 || rig3 == 5 || rig4 == 5)
-                    {
-                        
-                        listView1.Items.Add("Cinquina! vince l'utente");
-                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));
-                        saldo2 += (costo / 3)*2;
-                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
-                        controlcinq++;
-                    }//Cinquina solo il banco
-                    else if (cinq == 5)
-                    {
-
-                        listView1.Items.Add("Cinquina! vince il banco");
-                        saldo2 -= (costo / 3) * 1;
-                        listView1.Items.Add("Saldo: " + Convert.ToString(saldo2 + (costo / 3)));                       
-                        listView1.Items.Add("Tombola: " + Convert.ToString((costo / 3) * 2));
-                        controlcinq++;
-                    }
-                    
-                }
-                
-                 //Caso in cui solo il banco fa tombola
-                    if (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15)
-                    {
-                      
-                        listView1.Items.Add("Tombola! Vince il banco ");
-                        saldo2 -= (costo / 3) * 2;
-                        break;
-                    }
-
-                //Caso in cui solo l'utente fa tombola
-                if (tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15)
-                {
-
-                    listView1.Items.Add("Tombola! Vince l'utente ");
-                    saldo2 += (costo / 3) * 2;
-                    break;
-                }
-
-                //Caso in cui il numero estratto sia quello che permette la tombola ad entrambi i giocatori
-                if ((tomb == 15 || tomb2 == 15 || tomb3 == 15 || tomb4 == 15) && (tomb6 == 15 || tomb7 == 15 || tomb8 == 15 || tomb9 == 15 || tomb10 == 15 || tomb11 == 15))
-                {
-                   
-                    listView1.Items.Add("Tombola! Parità");
-                    saldo2 += (costo / 3) * 2;
-                    break;
-                }
-
             }
-            //Mostra il tasto return per tornare al menù
-            button2.Visible = true;
-
         }
 
        //Elimina il valore dalla datagridview settandolo a 0 e successivamente rende lo sfondo dove prima c'è il numero a rosso per indicare all'utente che è stato estratto

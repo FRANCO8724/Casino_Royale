@@ -25,6 +25,7 @@ namespace Casino_Royale
         decimal premio; //Variabile che tiene memorizzao il montepremi finale
         decimal punt;//La puntata ovvero la quantità che l'utente o il banco punta a ogni mano
         Carta card;//Dichiaro la classe
+        Funzio fun;//Dichiaro la classe
 
         public Form4(decimal saldo)
         {
@@ -40,6 +41,8 @@ namespace Casino_Royale
             premio = 0;
             punt = 0;
             cont = 0;
+
+            fun = new Funzio();//Inizializzo la classe
 
             //Posiziona tutte le eventuali picturebox per mantenere la visualizzazione delle carte e della partita in un modo pulito      
             int x = 5; int y = 18;
@@ -77,7 +80,6 @@ namespace Casino_Royale
             pictureBox7.Visible = false;
             pictureBox8.Visible = false;
             pictureBox9.Visible = false;
-            label1.Visible = false;
 
             //Aggiorna la listview con saldo, puntata,...
             AggiornamentoTab();
@@ -101,52 +103,60 @@ namespace Casino_Royale
         //Entra nella partita
         private void button5_Click(object sender, EventArgs e)
         {
-            //Setto i valori a 0 in quanto se è la mia seconda partita evito che mantenga i valori di quella precedente
-            premio = 0;
-            punt = 0;
-            cont = 0;
+            //Condizione per cui se l'utente a meno di 5 non può entrare nella giocata
+            if (cont2 >= 5)
+            {
+                //Setto i valori a 0 in quanto se è la mia seconda partita evito che mantenga i valori di quella precedente
+                premio = 0;
+                punt = 0;
+                cont = 0;
 
-            //pulisco la listview e nascondo i tasti iniziali mostrando quelli necessari per la partita
-            listView1.Clear();
-            button1.Visible = true;
-            button2.Visible = true;
-            button4.Visible = true;
-            button3.Visible = false;
-            button5.Visible = false;
-            textBox1.Visible = true;
+                //pulisco la listview e nascondo i tasti iniziali mostrando quelli necessari per la partita
+                listView1.Clear();
+                button1.Visible = true;
+                button2.Visible = true;
+                button4.Visible = true;
+                button3.Visible = false;
+                button5.Visible = false;
+                textBox1.Visible = true;
 
-            //Estraggo le prime immagini
-            SetupPictureBox(pictureBox1, 2);
-            SetupPictureBox(pictureBox2, 3);
-            SetupPictureBox(pictureBox3, 4);
-            SetupPictureBox(pictureBox6, 0);
-            SetupPictureBox(pictureBox7, 1);
+                //Estraggo le prime immagini
+                SetupPictureBox(pictureBox1, 2);
+                SetupPictureBox(pictureBox2, 3);
+                SetupPictureBox(pictureBox3, 4);
+                SetupPictureBox(pictureBox6, 0);
+                SetupPictureBox(pictureBox7, 1);
 
-            //E le mostro all'utente
-            pictureBox1.Visible = true;
-            pictureBox2.Visible = true;
-            pictureBox3.Visible = true;
-            pictureBox6.Visible = true;
-            pictureBox7.Visible = true;
-            pictureBox4.Visible = false;
-            pictureBox5.Visible = false;
-            pictureBox8.Visible = false;
-            pictureBox9.Visible = false;
-            
-            //Nascondo quelle del banco
-            pictureBox8.ImageLocation = "..\\..\\Resources\\cardback.png";
-            pictureBox9.ImageLocation = "..\\..\\Resources\\cardback.png";
+                //E le mostro all'utente
+                pictureBox1.Visible = true;
+                pictureBox2.Visible = true;
+                pictureBox3.Visible = true;
+                pictureBox6.Visible = true;
+                pictureBox7.Visible = true;
+                pictureBox4.Visible = false;
+                pictureBox5.Visible = false;
+                pictureBox8.Visible = false;
+                pictureBox9.Visible = false;
 
-            //Aggiorno i valori 
-            cont2 -= 5;
-            premio = 10;
-            punt = 10;
+                //Nascondo quelle del banco
+                pictureBox8.ImageLocation = "..\\..\\Resources\\cardback.png";
+                pictureBox9.ImageLocation = "..\\..\\Resources\\cardback.png";
 
-            //Funziona che aggiorna la listview
-            AggiornamentoTab();
+                //Aggiorno i valori 
+                cont2 -= 5;
+                premio = 10;
+                punt = 10;
 
-            //Controllo se il banco vuole puntare
-            a = PuntataBanco();
+                //Funziona che aggiorna la listview
+                AggiornamentoTab();
+
+                //Controllo se il banco vuole puntare
+                a = PuntataBanco();
+            }
+            else
+            {
+                MessageBox.Show("Saldo insufficiente");
+            }
 
         }
 
@@ -176,70 +186,87 @@ namespace Casino_Royale
         //Puntata
         private void button1_Click(object sender, EventArgs e)
         {
-            //Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
-            if (cont == 2 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
+            //Funzione che controlla se I dati mmessi nella textbox possono essere accettati 
+            bool q = fun.Inserimento(textBox1.Text, cont2);
+
+            //In caso in cui possono essere accettati eseguo il codice
+            if (q == true)
             {
-                //Estraggo le ultime carte
-                SetupPictureBox(pictureBox8, 7);
-                SetupPictureBox(pictureBox9, 8);
+                //Condizione che controlla che l'utente non stia puntando più di quello che ha
+                if (Convert.ToInt32(textBox1.Text) >= 0 && Convert.ToInt32(textBox1.Text) <= cont2)
+                {
+                    //Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+                    if (cont == 2 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
+                    {
+                        //Estraggo le ultime carte
+                        SetupPictureBox(pictureBox8, 7);
+                        SetupPictureBox(pictureBox9, 8);
 
-                //Rendo visibili le picture per visualizzare le carte appena estratte 
-                pictureBox8.Visible = true;
-                pictureBox9.Visible = true;
+                        //Rendo visibili le picture per visualizzare le carte appena estratte 
+                        pictureBox8.Visible = true;
+                        pictureBox9.Visible = true;
 
-                //Vedo chi vince fra i due
-                Controllo();
+                        //Vedo chi vince fra i due
+                        Controllo();
 
-                //Nascondo i tasti di gioco e rimostro quelli iniziali
-                button1.Visible = false;
-                button2.Visible = false;
-                button4.Visible = false;
-                textBox1.Visible = false;
-                button5.Visible = true;
-                button3.Visible = true;
-                listView2.Clear();
+                        //Nascondo i tasti di gioco e rimostro quelli iniziali
+                        button1.Visible = false;
+                        button2.Visible = false;
+                        button4.Visible = false;
+                        textBox1.Visible = false;
+                        button5.Visible = true;
+                        button3.Visible = true;
+                        listView2.Clear();
 
-            }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
-            if (cont == 1 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
-            {
-                //Estraggo rendo visibile la nuova carta
-                SetupPictureBox(pictureBox5, 6);
-                pictureBox5.Visible = true;
+                    }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+                    if (cont == 1 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
+                    {
+                        //Estraggo rendo visibile la nuova carta
+                        SetupPictureBox(pictureBox5, 6);
+                        pictureBox5.Visible = true;
 
-                //Controllo se il banco vuole puntare
-                a = PuntataBanco();
-                cont++;
+                        //Controllo se il banco vuole puntare
+                        a = PuntataBanco();
+                        cont++;
 
-                //aggiorno le variabili
-                punt += Convert.ToInt32(textBox1.Text)*2;
-                premio += punt;
-                cont2 -= Convert.ToInt32(textBox1.Text);
+                        //aggiorno le variabili
+                        punt += Convert.ToInt32(textBox1.Text) * 2;
+                        premio += punt;
+                        cont2 -= Convert.ToInt32(textBox1.Text);
 
-                //Aggiorno la visualizzazione
-                listView1.Clear();
-                AggiornamentoTab();
+                        //Aggiorno la visualizzazione
+                        listView1.Clear();
+                        AggiornamentoTab();
 
-            }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
-            if (cont == 0 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
-            {
-                //Estraggo rendo visibile la nuova carta
-                SetupPictureBox(pictureBox4, 5);
-                pictureBox4.Visible = true;
-                a = PuntataBanco();
-                cont++;
+                    }//Imposta le condizioni ovvero se ci troviamo alla mossa 1 2 o 3 far si che la puntata non superi mai il conto e infine far si che se il banco punta la nostra puntata per andare avanti deve essere uguale o maggiore di essa
+                    if (cont == 0 && (a == Convert.ToInt32(textBox1.Text) || Convert.ToInt32(textBox1.Text) > a) && Convert.ToInt32(textBox1.Text) < cont2)
+                    {
+                        //Estraggo rendo visibile la nuova carta
+                        SetupPictureBox(pictureBox4, 5);
+                        pictureBox4.Visible = true;
+                        a = PuntataBanco();
+                        cont++;
 
-                //Aggiorno i dati delle variabili
-                punt += Convert.ToInt32(textBox1.Text)*2;
-                premio += punt;
-                cont2 -= Convert.ToInt32(textBox1.Text);
+                        //Aggiorno i dati delle variabili
+                        punt += Convert.ToInt32(textBox1.Text) * 2;
+                        premio += punt;
+                        cont2 -= Convert.ToInt32(textBox1.Text);
 
-                //Aggiorno la visualizzazione
-                listView1.Clear();
-                AggiornamentoTab();
+                        //Aggiorno la visualizzazione
+                        listView1.Clear();
+                        AggiornamentoTab();
 
+                    }
+
+                }
+                else
+                {
+                    //Mostra all'utente la motivazione del perchè non può continuare a giocare
+                    MessageBox.Show("Saldo superiore a quello che puoi puntare");
+                    textBox1.Clear();
+                }
             }
-            
-            
+        
         }
 
         //Lascia

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Casino_Royale
 {
+    //Funzione che dichiara la quantità di elementi in una riga
     internal class Riga
     {
        

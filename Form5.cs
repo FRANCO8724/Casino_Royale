@@ -21,6 +21,7 @@ namespace Casino_Royale
         private int l2;//Controllore dealer
         private List<int> numeriEstratti = new List<int>(); // Lista per tenere traccia dei numeri già estratti
         Random random = new Random();//Variabile che mi permette di estrarre i numeri in modo randomico
+        Funzio fun;//Dichiaro la classe
 
 
         public Form5(decimal conto2)
@@ -33,6 +34,8 @@ namespace Casino_Royale
             dealer = 0;
             l = 2;           
             l2 = 9;
+
+            fun = new Funzio();//Inizializzo la classe
 
             this.WindowState = FormWindowState.Maximized;//Imposta la grandezza del form alla stessa grandezza dello schermo                                                         
             this.FormBorderStyle = FormBorderStyle.FixedDialog;// Impedisci la ridimensione del form
@@ -64,53 +67,65 @@ namespace Casino_Royale
             //Funzione che nasconde le picture box richiamata in modo che se l'utente vogli subito giocare una partita dopo averne fatta già una le picturebox si nascondano nuovamente
             pic();
 
+            //Funzione che controlla se I dati mmessi nella textbox possono essere accettati 
+            bool q = fun.Inserimento(textBox1.Text, conto);
 
-            //Se il testo è presente
-            if (textBox1.Text != "")
+            //Se il testo è accettabile
+            if (q == true)
             {
-                //Converto il testo in numero per poterlo aggiungere alla portata
-                punt2 = Convert.ToInt32(textBox1.Text);
-
-                //Condizione per cui la puntata dev essere maggiore di 0 e minore del conto totale
-                if (punt2 > 0 && punt2 <= conto)
+                //Condizione che controlla che l'utente non stia puntando più di quello che ha
+                if (Convert.ToInt32(textBox1.Text) >= 0 && Convert.ToInt32(textBox1.Text) <= conto)
                 {
-                   //Nascondo gli elementi di entrata
-                    textBox1.Visible = false;
-                    button1.Visible = false;
-                    label2.Visible = false;
+                    //Converto il testo in numero per poterlo aggiungere alla portata
+                    punt2 = Convert.ToInt32(textBox1.Text);
 
-                    //Aggiorno i dati
-                    conto -= punt2;
+                    //Condizione per cui la puntata dev essere maggiore di 0 e minore del conto totale
+                    if (punt2 > 0 && punt2 <= conto)
+                    {
+                        //Nascondo gli elementi di entrata
+                        textBox1.Visible = false;
+                        button1.Visible = false;
 
-                    //Visualizzo i dati aggiornati
-                    listView1.Items.Clear();
-                    listView1.Items.Add("puntata: " + punt2);
-                    listView1.Items.Add("Saldo: " + conto);
+                        //Aggiorno i dati
+                        conto -= punt2;
 
-                    //Mostro gli elementi di gioco
-                    button2.Visible = true;
-                    button4.Visible = true;
-                    pictureBox1.Visible = true;
-                    pictureBox9.Visible = true;
+                        //Visualizzo i dati aggiornati
+                        listView1.Items.Clear();
+                        listView1.Items.Add("puntata: " + punt2);
+                        listView1.Items.Add("Saldo: " + conto);
 
-                    //Estraggo la prima carta
-                    user = SetupPictureBox(pictureBox1, user);
+                        //Mostro gli elementi di gioco
+                        button2.Visible = true;
+                        button4.Visible = true;
+                        pictureBox1.Visible = true;
+                        pictureBox9.Visible = true;
 
-                    //Estraggo l'immagine con il restro della carta e la inserisco nel button
-                    pictureBox9.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-                    pictureBox9.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox9.ImageLocation = "..\\..\\Resources\\" + "cardback" + ".png";
+                        //Estraggo la prima carta
+                        user = SetupPictureBox(pictureBox1, user);
 
+                        //Estraggo l'immagine con il restro della carta e la inserisco nel button
+                        pictureBox9.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                        pictureBox9.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox9.ImageLocation = "..\\..\\Resources\\" + "cardback" + ".png";
+
+
+                    }
+                    else
+                    {
+                        //Se le condizioni non vengono rispettate messaggio di errore
+                        //label2.Visible = true;
+                        textBox1.Text = "";
+                    }
 
                 }
                 else
                 {
-                    //Se le condizioni non vengono rispettate messaggio di errore
-                    //label2.Visible = true;
-                    textBox1.Text = "";
+                    //Mostra all'utente la motivazione del perchè non può continuare a giocare
+                    MessageBox.Show("Saldo superiore a quello che puoi puntare");
+                    textBox1.Clear();
                 }
-
             }
+
                   
         }
 
@@ -272,7 +287,6 @@ namespace Casino_Royale
             pictureBox13.Visible = false;
             pictureBox14.Visible = false;
             pictureBox15.Visible = false;
-            label2.Visible = false;
 
         }
 
@@ -286,7 +300,6 @@ namespace Casino_Royale
             {
                 listView1.Items.Clear();
                 listView1.Items.Add("puntata: 0");
-                conto -= punt2;
                 listView1.Items.Add("Saldo: " + conto);
                 listView1.Items.Add("Parità");
             }
@@ -303,7 +316,6 @@ namespace Casino_Royale
             {
                 listView1.Items.Clear();
                 listView1.Items.Add("puntata: 0");
-                conto -= punt2;
                 listView1.Items.Add("Saldo: " + conto);
                 listView1.Items.Add("Vince il banco");
             }
@@ -326,7 +338,6 @@ namespace Casino_Royale
             {
                 listView1.Items.Clear();
                 listView1.Items.Add("puntata: 0");
-                conto -= punt2;
                 listView1.Items.Add("Saldo: " + conto);
                 listView1.Items.Add("Vince il banco");
             }
@@ -343,6 +354,7 @@ namespace Casino_Royale
             textBox1.Visible = true;
             button1.Visible = true;
             button3.Visible = true;
+            textBox1.Clear();
         }
     }
 }
