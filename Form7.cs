@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -13,7 +15,7 @@ namespace Casino_Royale
     {
         private static readonly HttpClient client = new HttpClient();//Dichiaro il servizio client da cui userò per l'API
         private List<int> randomNumbers = new List<int>();//Lista che memorizza i numeri randomici
-        private const string filePath = "randomNumbers.txt";//Dichiaro il percorso del file
+        private const string filePath = "randomNumbers.json";//Dichiaro il percorso del file
         int[] array = new int[37];//Dichiaro l'array dei 36 numeri
         private int randomNumber;//Dichiaro il numerorandomico estratto
         private decimal saldo; //Dichiarazione conto dell'utente 
@@ -50,7 +52,7 @@ namespace Casino_Royale
             await GetRandomNumberAsync();
         }
 
-        private async Task GetRandomNumberAsync()
+        private async Task GetRandomNumberAsync() 
         {
             try
             {
@@ -76,13 +78,14 @@ namespace Casino_Royale
                 // Gestione degli errori
                 MessageBox.Show($"Errore durante il recupero del numero casuale: {ex.Message}");
             }
-        }
-
+        }  
+         
         //Salva i numeri random su file
         private void SaveRandomNumbersToFile()
         {
             try
             {
+                string jsonDa = JsonConvert.SerializeObject(randomNumbers, Formatting.Indented);
                 File.WriteAllLines(filePath, randomNumbers.ConvertAll(x => x.ToString()));
             }
             catch (Exception ex)
